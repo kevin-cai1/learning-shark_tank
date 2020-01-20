@@ -9,6 +9,14 @@
     - this can be done with the command `pip3 install -r requirements.txt`
     - this only needs to be done at setup, and when additional packages are added to the project
 
+## Troubleshooting
+If you are getting `command not found` when running virtualenv after installing it, I fixed the issue by adding the location to my $PATH.
+You can do this by:
+1. Running `pip3 show virtualenv` to find the install location for the package
+2. Opening $PATH by running `sudo nano /etc/paths`
+3. Add the install location as a new line to the file. (for me this was /Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages)
+4. You should now be able to run virtualenv without any issues
+
 ## Running the API
 1. Make sure you have the virtual environment activated before you do anything
 2. Run `python3.8 api.py` to run the API.
