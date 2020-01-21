@@ -1,5 +1,5 @@
 -- schema for Learning Tracking System database
-
+DROP TABLE IF EXISTS User;
 CREATE TABLE User (
     email       text,
     name        text not null,
@@ -9,21 +9,33 @@ CREATE TABLE User (
     primary key (email)
 );
 
+DROP TABLE IF EXISTS Coach;
 CREATE TABLE Coach (
     email       text,
     name        text,
     primary key (email)
 );
 
-CREATE TABLE Certification (
-    name        text,
-    primary key (name)
+DROP TABLE IF EXISTS Course;
+CREATE TABLE Course (
+    name            text,
+    isCertificate   boolean,
+    pillar          PillarType,
+    primary key     (name)
 );
 
+DROP TABLE IF EXISTS CourseToCareer;
+CREATE TABLE CourseToCareer (
+    course          text references Course(name),
+    careerTrack     CareerTracks,
+    primary key     (course, careerTrack)
+);
+
+DROP TABLE IF EXISTS LearningEntry;
 CREATE TABLE LearningEntry (
     id          integer,
     user        text references User(email),
-    certificate text references Certification(name),
+    course text references Course(name),
     start_date  text,
     end_date    text,
     primary key (id)
