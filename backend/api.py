@@ -25,6 +25,7 @@ class testEndpoint(Resource):
 class getLearningPlan(Resource):
     @api.doc(description="Return learning plan associated with the given user")
     @api.response(200, "Successful")
+    @api.response(404, "No learning entries found")
     @api.response(404, "User not found")
     def get(self, user_id):
         learning_plan = { #dictionary
@@ -34,10 +35,20 @@ class getLearningPlan(Resource):
         entry_count = 0
         conn = db.get_conn() 
         c = conn.cursor() #cursor to execute commands
+        c.execute("SELECT EXISTS(SELECT name FROM User WHERE email = ?)", (user_id,))  
+        user_check = c.fetchone()[0]    # returns 1 if exists, otherwise 0
+
+        if (user_check == 0):   # user doesn't exist
+            api.abort(404, "User '{}' doesn't exist".format(user_id))
+
         c.execute("SELECT e.id, e.user, e.start_date, e.end_date, e.course, c.pillar FROM LearningEntry e, Course c WHERE e.course = c.name AND user = ?", (user_id,)) #quotes is SQL command/query. question mark defines placeholder, second part - give tuple 
         results = c.fetchall() # actually gets result from query 
         # fetch all is a list of lists 
         conn.close() # make sure to close database 
+
+        if (results == []): # no result from database
+            api.abort(404, "No learning entries found for user: {}".format(user_id))
+
         for entry in results:
             learning_entry = {
                 'id': entry[0],
