@@ -20,3 +20,5 @@ You can do this by:
 ## Running the API
 1. Make sure you have the virtual environment activated before you do anything
 2. Run `python3.8 api.py` to run the API.
+
+If you need to reload the database (when adding new data or changing the schema), run `python3.8 db.py` before starting the API again.

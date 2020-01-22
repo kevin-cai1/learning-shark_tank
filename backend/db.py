@@ -18,20 +18,31 @@ def test_db_call():
 
     # Save (commit) the changes
     conn.commit()
-    
+
     c.execute("SELECT * FROM User")
     print(c.fetchall())
 
     conn.close()
 
 def init_db():
-    conn = sqlite3.connect('new.db')
+    db = sqlite3.connect('learning.db')
+    load_schema(db)
+    insert_data(db)
 
-    f = open('./db.sql', 'r')
-    str = f.read()
-    
-    cur = conn.cursor()
-    cur.execute(str)
+    db.commit()
+    db.close()
+
+def load_schema(db):
+    with open('db.sql', 'r') as sql_file:
+        sql_script = sql_file.read()
+    cursor = db.cursor()
+    cursor.executescript(sql_script)
+
+def insert_data(db):
+    with open('db_insert.sql', 'r') as sql_file:
+        sql_script = sql_file.read()
+    cursor = db.cursor()
+    cursor.executescript(sql_script)
 
 
 if __name__ == "__main__":
