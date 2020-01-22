@@ -10,5 +10,7 @@ INSERT INTO Course VALUES ('AWS', 'true', 'Specialisation');
 INSERT INTO Course VALUES ('Mulesoft', 'false', 'Specialisation');
 INSERT INTO Course VALUES ('Azure', 'true','Cloud');
 
+-- LearningEntry(id, user, course, start_date, end_date)
+-- id should be unique
 INSERT INTO LearningEntry VALUES ('1', 'kevcai@deloitte.com.au', 'AWS', '20-01-2020', '20-07-2020');
-INSERT INTO LearningEntry VALUES ('1','tajacobs@deloitte.com.au','Azure','23-01-2020','23-02-2020');
+INSERT INTO LearningEntry VALUES ('2','tajacobs@deloitte.com.au','Azure','23-01-2020','23-02-2020');
