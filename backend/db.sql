@@ -20,14 +20,14 @@ DROP TABLE IF EXISTS Course;
 CREATE TABLE Course (
     name            text,
     isCertificate   boolean,
-    pillar          PillarType,
+    pillar          text,
     primary key     (name)
 );
 
 DROP TABLE IF EXISTS CourseToCareer;
 CREATE TABLE CourseToCareer (
     course          text references Course(name),
-    careerTrack     CareerTracks,
+    careerTrack     text,
     primary key     (course, careerTrack)
 );
 
