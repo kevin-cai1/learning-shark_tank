@@ -10,6 +10,9 @@ entry_data = api.model('entry',{
     'end_date' : fields.DateTime(description = 'Date individual intends to have completed the task'),
 })
 
+task_complete = api.model('task_complete',{
+    'task' : fields.String(description = 'Task to be marked as complete')
+})
 
 @api.route('/<string:user_id>') #2 functions - add and delete
 @api.doc(params={'user_id': 'the email address associated with a user'})
@@ -31,6 +34,19 @@ class entryFunctions(Resource):
         conn.commit()
         conn.close()
         return 'Entry saved'
+
+@api.route('/status/<string:user_id>')
+@api.doc(params={"user_id":'the email address associated with a user'})
+@api.expect(task_complete)
+class markEntryAsComplete(Resource):
+    def patch(self,user_id):
+        req = request.get_json(force=True)
+        conn = db.get_conn() 
+        c = conn.cursor() #cursor to execute commands
+        c.execute('update LearningEntry set completed = "True" where course = ? and user = ?',(req['task'],user_id),)
+        conn.commit()
+        conn.close()
+        return req['task'] + " marked as completed"
 
 def generate_ID():
     conn = db.get_conn() 
