@@ -33,13 +33,13 @@ def init_db():
     db.close()
 
 def load_schema(db):
-    with open('db.sql', 'r') as sql_file:
+    with open('db_data/db.sql', 'r') as sql_file:
         sql_script = sql_file.read()
     cursor = db.cursor()
     cursor.executescript(sql_script)
 
 def insert_data(db):
-    with open('db_insert.sql', 'r') as sql_file:
+    with open('db_data/db_insert.sql', 'r') as sql_file:
         sql_script = sql_file.read()
     cursor = db.cursor()
     cursor.executescript(sql_script)

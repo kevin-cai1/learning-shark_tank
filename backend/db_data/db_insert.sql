@@ -8,7 +8,7 @@ INSERT INTO Coach VALUES ('coach1@deloitte.com.au', 'Coach 1');
 
 INSERT INTO Course VALUES ('AWS', 'true', 'Specialisation');
 INSERT INTO Course VALUES ('Mulesoft', 'false', 'Specialisation');
-INSERT INTO Course VALUES ('Azure', 'true','Specialisation');
+INSERT INTO Course VALUES ('Azure', 'true','Cloud');
 
 -- LearningEntry(id, user, course, start_date, end_date)
 -- id should be unique
