@@ -16,27 +16,28 @@ CREATE TABLE Coach (
     primary key (email)
 );
 
-DROP TABLE IF EXISTS Course;
-CREATE TABLE Course (
+DROP TABLE IF EXISTS Task;
+CREATE TABLE Task (
     name            text,
     isCertificate   boolean,
     pillar          text,
     primary key     (name)
 );
 
-DROP TABLE IF EXISTS CourseToCareer;
-CREATE TABLE CourseToCareer (
-    course          text references Course(name),
+DROP TABLE IF EXISTS TaskToCareer;
+CREATE TABLE TaskToCareer (
+    task          text references Task(name),
     careerTrack     text,
-    primary key     (course, careerTrack)
+    primary key     (task, careerTrack)
 );
 
 DROP TABLE IF EXISTS LearningEntry;
 CREATE TABLE LearningEntry (
     id          integer,
     user        text references User(email),
-    course text references Course(name),
+    task text references Task(name),
     start_date  text,
     end_date    text,
+    completed boolean,
     primary key (id)
 );
