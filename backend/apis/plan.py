@@ -26,7 +26,7 @@ class getLearningPlan(Resource):
         if (user_check == 0):   # user doesn't exist
             api.abort(404, "User '{}' doesn't exist".format(user_id))
 
-        c.execute("SELECT e.id, e.user, e.start_date, e.end_date, e.course, c.pillar FROM LearningEntry e, Course c WHERE e.course = c.name AND user = ?", (user_id,)) #quotes is SQL command/query. question mark defines placeholder, second part - give tuple 
+        c.execute("SELECT e.id, e.user, e.start_date, e.end_date, e.task, c.pillar FROM LearningEntry e, Task c WHERE e.task = c.name AND user = ?", (user_id,)) #quotes is SQL command/query. question mark defines placeholder, second part - give tuple 
         results = c.fetchall() # actually gets result from query 
         # fetch all is a list of lists 
         conn.close() # make sure to close database 
