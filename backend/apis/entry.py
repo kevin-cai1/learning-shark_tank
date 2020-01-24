@@ -39,6 +39,14 @@ class entryFunctions(Resource):
         conn.close()
         return 'Entry saved'
 
+@api.route('/update/<int:user_id>')
+class updateEntry(Resource):
+    def put(self, user_id):
+        # take in a payload,
+        # set properties for the entry specified 
+        return "something"
+
+
 @api.route('/status/<string:user_id>')
 @api.doc(params={"user_id":'the email address associated with a user'})
 @api.expect(task_complete)
@@ -61,9 +69,9 @@ class markEntryAsComplete(Resource):
 def generate_ID():
     conn = db.get_conn() 
     c = conn.cursor() #cursor to execute commands
-    c.execute('SELECT COUNT(*) FROM LearningEntry')
-    sum = c.fetchone()[0]
-    return sum+1
+    c.execute('SELECT MAX(id) FROM LearningEntry')
+    val = c.fetchone()[0]
+    return val+1
 
 def formatDate(dattime):
     date = datetime.strptime(dattime, '%Y-%m-%d')
