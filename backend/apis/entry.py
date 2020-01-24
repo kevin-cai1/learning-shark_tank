@@ -43,7 +43,7 @@ class entryFunctions(Resource):
 @api.doc(params={"user_id":'the email address associated with a user'})
 @api.expect(task_complete)
 class markEntryAsComplete(Resource):
-    def patch(self,user_id):
+    def put(self,user_id):
         req = request.get_json(force=True)
         conn = db.get_conn() 
         c = conn.cursor() #cursor to execute commands
