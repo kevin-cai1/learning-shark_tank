@@ -49,6 +49,17 @@ class getLearningPlan(Resource):
         learning_plan['entry_count'] = entry_count
         return learning_plan
 
+@api.route('/all')
+class getAllEntries(Resource):
+    def get(self):
+        # get db = all entries
+        plans = {
+            'entry_count': 0,
+            'entries': list()
+        }
+
+        return plans
+
 @api.route('/active/<string:user_id>')
 @api.doc(params={'user_id': 'the email address associated with a user'})
 class getActiveEntries(Resource):
