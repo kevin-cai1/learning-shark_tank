@@ -1,5 +1,6 @@
 from flask_restplus import Namespace, Resource, fields
 from flask import request, jsonify
+from datetime import date
 import db
 
 api = Namespace('plan', description='Learning Plan specific operations')
@@ -65,7 +66,7 @@ class getAllEntries(Resource):
 class getActiveEntries(Resource):
     @api.doc(description="TODO Retrieves entries currently in progress")
     @api.response(200, "Successful")
-    def get(self, number):
+    def get(self, user_id):
         learning_plan = { #dictionary
             'entry_count' : 0, #label : information
             'entries': list() 
@@ -74,7 +75,7 @@ class getActiveEntries(Resource):
         entry_count = 0
         conn = db.get_conn() 
         c = conn.cursor() #cursor to execute commands
-        c.execute("SELECT e.id, e.user, e.start_date, e.end_date, e.course, c.pillar FROM LearningEntry e, Course c WHERE e.course = c.name AND user = ?", (user_id,)) #quotes is SQL command/query. question mark defines placeholder, second part - give tuple 
+        c.execute("SELECT e.id, e.user, e.start_date, e.end_date, e.task, c.pillar FROM LearningEntry e, Task c WHERE e.task = c.name AND user = ?", (user_id,)) #quotes is SQL command/query. question mark defines placeholder, second part - give tuple 
         results = c.fetchall() # actually gets result from query 
         # fetch all is a list of lists 
         conn.close() # make sure to close database 

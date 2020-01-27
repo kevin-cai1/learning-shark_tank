@@ -50,7 +50,7 @@ class NavBar extends Component {
                 indicatorColor="secondary"
               >
                 <Tab 
-                  label="Learning Plan" 
+                  label=s"Learning Plan" 
                   value="/"
                   component={Link} to="/" 
                   onClick = {() => this.handleClick('/')}/>
