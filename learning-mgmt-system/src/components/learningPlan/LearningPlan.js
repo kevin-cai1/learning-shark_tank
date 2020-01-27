@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
-
 import { withStyles } from '@material-ui/core/styles';
+
+import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
+import 'react-vertical-timeline-component/style.min.css';
 
 const styles = (theme) => ({
   toolbar: theme.mixins.toolbar,
@@ -8,13 +10,16 @@ const styles = (theme) => ({
 
 class LearningPlan extends Component {
 
+  componentDidMount() {
+    
+  }
+
   render() {
     const {classes} = this.props
 
     return(
-      <div>
-        This is the Learning Plan
-      </div>
+      <VerticalTimeline>
+      </VerticalTimeline>
     )
   }
 }

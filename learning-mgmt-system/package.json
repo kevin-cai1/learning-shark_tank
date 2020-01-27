@@ -13,6 +13,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.3.0",
     "react-thunk": "^1.0.0",
+    "react-vertical-timeline-component": "^2.5.0",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-state-sync": "^3.0.0",
