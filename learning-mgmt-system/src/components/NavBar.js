@@ -7,8 +7,8 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
 import { Link, Switch, Route } from 'react-router-dom';
-import LearningPlan from './learningPlan/LearningPlan';
-import Calendar from './calendar/Calendar'
+import LearningPlan from './LearningPlan';
+import CalendarView from './CalendarView'
 
 const styles = (theme) => ({
   root: {
@@ -71,7 +71,7 @@ class NavBar extends Component {
           </Route>
           <Route exact path="/calendar">
             <div className={classes.content}>
-              <Calendar />
+              <CalendarView />
             </div>
           </Route>
         </Switch>
