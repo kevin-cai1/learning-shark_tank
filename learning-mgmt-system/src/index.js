@@ -8,11 +8,19 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 import './index.css';
 import App from './components/App';
-import reducers from './reducers';
+import reducers from './components/reducers';
 import * as serviceWorker from './serviceWorker';
 
 const initialState = {
-
+    login: {
+        user: "Jackie Banh",
+        email: "jabanh@deloitte.com.au"
+    },
+    plan: {
+        activePlan: null,
+        userPlan: null,
+        allPlan: null
+    }
 }
 
 const store = createStore(reducers, initialState, composeWithDevTools(applyMiddleware(thunk)))
