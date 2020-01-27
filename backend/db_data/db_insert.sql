@@ -41,3 +41,4 @@ INSERT INTO LearningEntry VALUES ('1', 'kevcai@deloitte.com.au', 'AWS', '2020-01
 INSERT INTO LearningEntry VALUES ('2','tajacobs@deloitte.com.au','Azure','2020-01-23','2020-02-23','False');
 INSERT INTO LearningEntry VALUES ('3','jabanh@deloitte.com.au','MuleSoft.U Developer Fundamentals (Mule 3)','2020-01-13','2020-02-07','False');
 INSERT INTO LearningEntry VALUES ('4','jabanh@deloitte.com.au','MuleSoft Certified Developer - Integration Professional (Mule 3)','2020-02-10','2020-02-10','False');
+INSERT INTO LearningEntry VALUES ('5','sluong@deloitte.com.au','Azure','2020-01-23','2020-01-25','False');
