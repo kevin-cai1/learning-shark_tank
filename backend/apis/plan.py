@@ -75,7 +75,7 @@ class getActiveEntries(Resource):
         entry_count = 0
         conn = db.get_conn() 
         c = conn.cursor() #cursor to execute commands
-        c.execute("SELECT e.id, e.user, e.start_date, e.end_date, e.task, c.pillar FROM LearningEntry e, Task c WHERE e.task = c.name AND user = ?", (user_id,)) #quotes is SQL command/query. question mark defines placeholder, second part - give tuple 
+        c.execute("SELECT e.id, e.user, e.start_date, e.end_date, e.task, c.pillar FROM LearningEntry e, Task c WHERE e.task = c.name AND user = ? ORDER BY e.start_date", (user_id,)) #quotes is SQL command/query. question mark defines placeholder, second part - give tuple 
         results = c.fetchall() # actually gets result from query 
         # fetch all is a list of lists 
         conn.close() # make sure to close database 
