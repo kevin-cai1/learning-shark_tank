@@ -38,7 +38,8 @@ INSERT INTO Task VALUES ('MuleSoft Certified Developer - Level 1 (Mule 4)', 1, '
 -- Date should be in the format of yyyy-mm-dd
 -- id should be unique
 -- Booleans are stored as 0 (false), 1 (true): queried as "SELECT * FROM _ WHERE completed = True"
-INSERT INTO LearningEntry VALUES ('1', 'kevcai@deloitte.com.au', 'AWS', '2020-01-20', '2020-07-20',0);
+INSERT INTO LearningEntry VALUES ('1', 'kevcai@deloitte.com.au', 'AWS Technical Essentials', '2020-01-20', '2020-07-20',0);
 INSERT INTO LearningEntry VALUES ('2','tajacobs@deloitte.com.au','Azure','2020-01-23','2020-02-23',0);
 INSERT INTO LearningEntry VALUES ('3','jabanh@deloitte.com.au','MuleSoft.U Developer Fundamentals (Mule 3)','2020-01-13','2020-02-07',0);
 INSERT INTO LearningEntry VALUES ('4','jabanh@deloitte.com.au','MuleSoft Certified Developer - Integration Professional (Mule 3)','2020-02-10','2020-02-10',0);
+INSERT INTO LearningEntry VALUES ('5','sluong@deloitte.com.au','Azure','2020-01-23','2020-01-25',0);
