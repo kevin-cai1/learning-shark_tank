@@ -15,6 +15,12 @@ task_complete = api.model('task_complete',{
     'task' : fields.String(description = 'Task to be marked as complete')
 })
 
+update_payload = api.model('update', {
+    'start_date' : fields.DateTime(description = 'New start date'),
+    'end_date' : fields.DateTime(description = 'New end date'),
+    'completed' : fields.Boolean(description = 'True/False for if the current learning entry has been completed')
+})
+
 @api.route('/<string:user_id>') #2 functions - add and delete
 @api.doc(params={'user_id': 'the email address associated with a user'})
 class entryFunctions(Resource):
@@ -30,7 +36,7 @@ class entryFunctions(Resource):
     @api.expect(entry_data)
     def post(self,user_id): 
         req = request.get_json(force=True)
-        if(not(checkFormat(req['start_date'])) or not(checkFormat(req['end_date']))):
+        if (not(checkFormat(req['start_date'])) or not(checkFormat(req['end_date']))):
             api.abort(400,"Incorrect date format")
         conn = db.get_conn() 
         c = conn.cursor() #cursor to execute commands
@@ -39,12 +45,67 @@ class entryFunctions(Resource):
         conn.close()
         return 'Entry saved'
 
-@api.route('/update/<int:user_id>')
+@api.route('/update/<int:entry_id>')
+@api.doc(params={'entry_id': 'the learning entry id associated with the current entry'})
 class updateEntry(Resource):
-    def put(self, user_id):
+    @api.expect(update_payload)
+    @api.response(404, "Entry not found")
+    def put(self, entry_id):
         # take in a payload,
+        req = request.get_json(force=True)
+        conn = db.get_conn()
+        c = conn.cursor()    
+
+        c.execute("SELECT EXISTS(SELECT id FROM LearningEntry WHERE id = ?)", (entry_id,))  
+        entry_check = c.fetchone()[0]    # returns 1 if exists, otherwise 0
+
+        if (entry_check == 0):   # entry doesn't exist
+            api.abort(404, "Entry '{}' doesn't exist".format(entry_id))
+
+        if (not isinstance(req['completed'], bool)):            # check that given value is a boolean
+            api.abort(400, "'completed' is not a boolean")
+
+        if (not(checkFormat(req['start_date'])) or not(checkFormat(req['end_date']))):
+            api.abort(400,"Incorrect date format")       
+
+        if ('start_date' in req):
+            sql = '''UPDATE LearningEntry
+                    SET start_date = ?
+                    WHERE id = ?'''
+            c.execute(sql, (req['start_date'],entry_id))
+
+        if ('end_date' in req):
+            sql = '''UPDATE LearningEntry
+                    SET end_date = ?
+                    WHERE id = ?'''
+            c.execute(sql, (req['end_date'],entry_id))
+            
+        if ('completed' in req):
+            sql = '''UPDATE LearningEntry
+                    SET completed = ?
+                    WHERE id = ?'''
+            c.execute(sql, (req['completed'],entry_id))
+
         # set properties for the entry specified 
-        return "something"
+        conn.commit()
+
+        c.execute("SELECT e.id, e.user, e.start_date, e.end_date, e.task, e.completed FROM LearningEntry e WHERE e.id = ?", (entry_id,)) #quotes is SQL command/query. question mark defines placeholder, second part - give tuple 
+        results = c.fetchall()[0] # actually gets result from query 
+        learning_entry = {
+                'id': results[0],
+                'user': results[1],
+                'start_date': results[2],
+                'end_date': results[3],
+                'task': results[4],
+                'completed': True if results[5] == 1 else False
+            }
+        return_val = {
+            'ok' : True, 
+            'entry': learning_entry 
+        }
+        conn.close()        
+        
+        return return_val
 
 
 @api.route('/status/<string:user_id>')
@@ -84,3 +145,9 @@ def checkFormat(date):
         return True
     else:
         return False
+
+def convertBool(val):
+    if (val == True):
+        return 1
+    else:
+        return 0
