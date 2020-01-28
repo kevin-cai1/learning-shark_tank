@@ -15,6 +15,7 @@ class getLearningPlan(Resource):
     @api.response(404, "User not found")
     def get(self, user_id):
         learning_plan = { #dictionary
+            'ok': False,
             'entry_count' : 0, #label : information
             'entries': list() 
         }
@@ -25,7 +26,7 @@ class getLearningPlan(Resource):
         user_check = c.fetchone()[0]    # returns 1 if exists, otherwise 0
 
         if (user_check == 0):   # user doesn't exist
-            api.abort(404, "User '{}' doesn't exist".format(user_id))
+            api.abort(404, "User '{}' doesn't exist".format(user_id),ok=False)
 
         c.execute("SELECT e.id, e.user, e.start_date, e.end_date, e.task, c.pillar FROM LearningEntry e, Task c WHERE e.task = c.name AND user = ?", (user_id,)) #quotes is SQL command/query. question mark defines placeholder, second part - give tuple 
         results = c.fetchall() # actually gets result from query 
@@ -33,7 +34,7 @@ class getLearningPlan(Resource):
         conn.close() # make sure to close database 
 
         if (results == []): # no result from database
-            api.abort(404, "No learning entries found for user: {}".format(user_id))
+            api.abort(404, "No learning entries found for user: {}".format(user_id),ok=False)
 
         for entry in results:
             learning_entry = {
@@ -47,6 +48,7 @@ class getLearningPlan(Resource):
             entry_count = entry_count + 1
             learning_plan['entries'].append(learning_entry)
 
+        learning_plan['ok'] = True
         learning_plan['entry_count'] = entry_count
         return learning_plan
 
@@ -58,6 +60,7 @@ class getAllEntries(Resource):
     def get(self):
         # get db = all entries
         plans = {
+            'ok' : False,
             'entry_count': 0,
             'entries': list()
         }
@@ -71,7 +74,7 @@ class getAllEntries(Resource):
         conn.close() # make sure to close database 
 
         if (results == []): # no result from database
-            api.abort(404, "No learning plans found")
+            api.abort(404, "No learning plans found",ok=False)
 
         for entry in results:
             learning_entry = {
@@ -85,6 +88,7 @@ class getAllEntries(Resource):
             entry_count = entry_count + 1
             plans['entries'].append(learning_entry)
 
+        plans['ok'] = True
         plans['entry_count'] = entry_count
         return plans
 
@@ -97,6 +101,7 @@ class getActiveEntries(Resource):
 
     def get(self, user_id):
         learning_plan = { #dictionary
+            'ok' : False,
             'entry_count' : 0, #label : information
             'entries': list() 
         }
@@ -109,7 +114,7 @@ class getActiveEntries(Resource):
         user_check = c.fetchone()[0]    # returns 1 if exists, otherwise 0
 
         if (user_check == 0):   # user doesn't exist
-            api.abort(404, "User '{}' doesn't exist".format(user_id))
+            api.abort(404, "User '{}' doesn't exist".format(user_id),ok=False)
 
         c.execute("SELECT e.id, e.user, e.start_date, e.end_date, e.task, c.pillar FROM LearningEntry e, Task c WHERE e.task = c.name AND user = ? AND e.start_date < date() AND e.completed = 'False' ORDER BY e.start_date", (user_id,)) #quotes is SQL command/query. question mark defines placeholder, second part - give tuple 
         results = c.fetchall() # actually gets result from query 
@@ -126,7 +131,7 @@ class getActiveEntries(Resource):
             }
             entry_count = entry_count + 1
             learning_plan['entries'].append(learning_entry)
-
+        learning_plan['ok'] = True
         learning_plan['entry_count'] = entry_count
         return learning_plan
 
@@ -139,6 +144,7 @@ class getActiveEntries(Resource):
 
     def get(self, user_id):
         learning_plan = { #dictionary
+            'ok' : False,
             'entry_count' : 0, #label : information
             'entries': list() 
         }
@@ -150,7 +156,7 @@ class getActiveEntries(Resource):
         user_check = c.fetchone()[0]    # returns 1 if exists, otherwise 0
 
         if (user_check == 0):   # user doesn't exist
-            api.abort(404, "User '{}' doesn't exist".format(user_id))
+            api.abort(404, "User '{}' doesn't exist".format(user_id),ok=False)
 
         c.execute("SELECT e.id, e.user, e.start_date, e.end_date, e.task, c.pillar FROM LearningEntry e, Task c WHERE e.task = c.name AND user = ? AND e.end_date < date() AND e.completed = 'False' ORDER BY e.start_date", (user_id,)) #quotes is SQL command/query. question mark defines placeholder, second part - give tuple 
         results = c.fetchall() # actually gets result from query 
@@ -169,4 +175,5 @@ class getActiveEntries(Resource):
             learning_plan['entries'].append(learning_entry)
 
         learning_plan['entry_count'] = entry_count
+        learning_plan['ok'] = True
         return learning_plan

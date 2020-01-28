@@ -11,25 +11,15 @@ entry_data = api.model('entry',{
     'end_date' : fields.DateTime(description = 'Date individual intends to have completed the task'),
 })
 
-task_complete = api.model('task_complete',{
-    'task' : fields.String(description = 'Task to be marked as complete')
-})
-
 update_payload = api.model('update', {
     'start_date' : fields.DateTime(description = 'New start date'),
     'end_date' : fields.DateTime(description = 'New end date'),
     'completed' : fields.Boolean(description = 'True/False for if the current learning entry has been completed')
 })
 
-@api.route('/<string:user_id>') #2 functions - add and delete
+@api.route('/add/<string:user_id>') #2 functions - add and delete
 @api.doc(params={'user_id': 'the email address associated with a user'})
 class entryFunctions(Resource):
-    @api.doc(description="TODO Deletes specified entry")
-    @api.response(200, "Successful")     
-    @api.response(404, "User not found")
-    def delete(self, user_id): # TO DO
-        return user_id
-    
     @api.doc(description="Adds new entry")
     @api.doc(params={'user_id': 'the email address associated with a user'})
     #@api.response(201, "Created successfully") #Ideally but in most cases 200
@@ -37,17 +27,54 @@ class entryFunctions(Resource):
     def post(self,user_id): 
         req = request.get_json(force=True)
         if (not(checkFormat(req['start_date'])) or not(checkFormat(req['end_date']))):
-            api.abort(400,"Incorrect date format")
+            api.abort(400,"Incorrect date format",ok=False)
         conn = db.get_conn() 
         c = conn.cursor() #cursor to execute commands
-        c.execute('INSERT INTO LearningEntry values(?,?,?,?,?,"False")',(generate_ID(), user_id, req['task'],req['start_date'],req['end_date'],),)
+        new_id = generate_ID()
+        c.execute('INSERT INTO LearningEntry values(?,?,?,?,?,0)',(new_id, user_id, req['task'],req['start_date'],req['end_date'],),)
         conn.commit()
         conn.close()
-        return 'Entry saved'
 
-@api.route('/update/<int:entry_id>')
+        entry = {
+            'id': new_id,
+            'user': user_id,
+            'start_date': req['start_date'],
+            'end_date': req['end_date'],
+            'task': req['task'],
+            'completed': False
+        }
+
+        return_val = {
+            'ok': True,
+            'entry': entry
+        }
+        return return_val
+
+@api.route('/<int:entry_id>')
 @api.doc(params={'entry_id': 'the learning entry id associated with the current entry'})
 class updateEntry(Resource):
+    @api.doc(description="Deletes specified entry")
+    @api.response(200, "Successful")     
+    @api.response(404, "Entry not found")
+    def delete(self, entry_id):
+        conn = db.get_conn()
+        c = conn.cursor()
+
+        c.execute("SELECT EXISTS(SELECT id FROM LearningEntry WHERE id = ?)", (entry_id,))  
+        entry_check = c.fetchone()[0]    # returns 1 if exists, otherwise 0
+
+        if (entry_check == 0):   # entry doesn't exist
+            api.abort(404, "Entry '{}' doesn't exist".format(entry_id),ok=False)
+
+        c.execute("DELETE FROM LearningEntry WHERE id = ?", (entry_id,))
+
+        conn.commit
+        conn.close()
+        return_val = {
+            'ok' : True
+        }
+        return return_val
+
     @api.expect(update_payload)
     @api.response(404, "Entry not found")
     def put(self, entry_id):
@@ -60,13 +87,13 @@ class updateEntry(Resource):
         entry_check = c.fetchone()[0]    # returns 1 if exists, otherwise 0
 
         if (entry_check == 0):   # entry doesn't exist
-            api.abort(404, "Entry '{}' doesn't exist".format(entry_id))
+            api.abort(404, "Entry '{}' doesn't exist".format(entry_id),ok=False)
 
         if (not isinstance(req['completed'], bool)):            # check that given value is a boolean
-            api.abort(400, "'completed' is not a boolean")
+            api.abort(400, "'completed' is not a boolean",ok=False)
 
         if (not(checkFormat(req['start_date'])) or not(checkFormat(req['end_date']))):
-            api.abort(400,"Incorrect date format")       
+            api.abort(400,"Incorrect date format",ok=False)       
 
         if ('start_date' in req):
             sql = '''UPDATE LearningEntry
@@ -108,24 +135,24 @@ class updateEntry(Resource):
         return return_val
 
 
-@api.route('/status/<string:user_id>')
-@api.doc(params={"user_id":'the email address associated with a user'})
-@api.expect(task_complete)
-class markEntryAsComplete(Resource):
-    def put(self,user_id):
-        req = request.get_json(force=True)
-        conn = db.get_conn() 
-        c = conn.cursor() #cursor to execute commands
-        # check if user has task existing before marking as complete
-        c.execute("SELECT EXISTS(SELECT user FROM LearningEntry where user = ? and task = ?)", (user_id,req['task'],))  
-        user_check = c.fetchone()[0]
-        if (user_check == 0):   # user doesn't exist
-            api.abort(404, "User '{}' doesn't have task '{}'".format(user_id,req['task']))
+#@api.route('/status/<string:user_id>')
+#@api.doc(params={"user_id":'the email address associated with a user'})
+#@api.expect(task_complete)
+#class markEntryAsComplete(Resource):
+#    def put(self,user_id):
+#        req = request.get_json(force=True)
+#        conn = db.get_conn() 
+#        c = conn.cursor() #cursor to execute commands
+#        # check if user has task existing before marking as complete
+#        c.execute("SELECT EXISTS(SELECT user FROM LearningEntry where user = ? and task = ?)", (user_id,req['task'],))  
+#        user_check = c.fetchone()[0]
+#        if (user_check == 0):   # user doesn't exist
+#            api.abort(404, "User '{}' doesn't have task '{}'".format(user_id,req['task']))
 
-        c.execute('update LearningEntry set completed = "True" where task = ? and user = ?',(req['task'],user_id),)
-        conn.commit()
-        conn.close()
-        return req['task'] + " marked as completed"
+#        c.execute('update LearningEntry set completed = "True" where task = ? and user = ?',(req['task'],user_id),)
+#        conn.commit()
+#        conn.close()
+#        return req['task'] + " marked as completed"
 
 def generate_ID():
     conn = db.get_conn() 
