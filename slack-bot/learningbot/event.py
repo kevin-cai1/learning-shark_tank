@@ -31,7 +31,7 @@ def handle_message(data):
     reply = "Hello {}. Nice to meet you!".format(
         poster_user_id
     )
-    #send_message(data, reply)
+    send_message(data, reply)
 
 def send_message(data, text):
     print("Sending message to Slack: {}".format(text))
