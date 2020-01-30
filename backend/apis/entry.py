@@ -6,7 +6,7 @@ import re
 api = Namespace('entry', description='Entry specific operations')
 
 entry_data = api.model('entry',{
-    'task' : fields.String(description = 'Task individual intends to complete i.e. certification, course, exam'),
+    'task' : fields.Integer(description = 'Task individual intends to complete i.e. certification, course, exam'),
     'start_date' : fields.DateTime(description = 'Date individual intends to start the task'),
     'end_date' : fields.DateTime(description = 'Date individual intends to have completed the task'),
 })
@@ -116,7 +116,7 @@ class updateEntry(Resource):
         # set properties for the entry specified 
         conn.commit()
 
-        c.execute("SELECT e.id, e.user, e.start_date, e.end_date, e.task, e.completed FROM LearningEntry e WHERE e.id = ?", (entry_id,)) #quotes is SQL command/query. question mark defines placeholder, second part - give tuple 
+        c.execute("SELECT e.id, e.user, e.start_date, e.end_date, c.name, e.completed FROM LearningEntry e, Task c WHERE e.id = ? AND e.task=c.id", (entry_id,)) #quotes is SQL command/query. question mark defines placeholder, second part - give tuple 
         results = c.fetchall()[0] # actually gets result from query 
         learning_entry = {
                 'id': results[0],
