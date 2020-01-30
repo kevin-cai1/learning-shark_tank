@@ -18,10 +18,11 @@ CREATE TABLE Coach (
 
 DROP TABLE IF EXISTS Task;
 CREATE TABLE Task (
+    id              integer,
     name            text,
     isCertificate   boolean,
     pillar          text,
-    primary key     (name)
+    primary key     (id)
 );
 
 DROP TABLE IF EXISTS TaskToCareer;
@@ -35,7 +36,7 @@ DROP TABLE IF EXISTS LearningEntry;
 CREATE TABLE LearningEntry (
     id          integer,
     user        text references User(email),
-    task text references Task(name),
+    task integer references Task(id),
     start_date  text,
     end_date    text,
     completed boolean,
