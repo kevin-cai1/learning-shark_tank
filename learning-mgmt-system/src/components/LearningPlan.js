@@ -2,7 +2,10 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withStyles } from '@material-ui/core/styles';
-import SchoolIcon from '@material-ui/icons/School';
+import CodeIcon from '@material-ui/icons/Code';
+import PeopleIcon from '@material-ui/icons/People';
+import SortIcon from '@material-ui/icons/Sort';
+
 
 import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
@@ -30,7 +33,11 @@ class LearningPlan extends Component {
 
   render() {
     const {classes} = this.props
-
+    
+    var buttonSpecialisation = <CodeIcon />
+    var buttonConsulting = <PeopleIcon />
+    var buttonMethodology = <SortIcon />
+    
     return(
       <React.Fragment>
         {this.state.tasks.length < 1 &&
@@ -43,14 +50,20 @@ class LearningPlan extends Component {
               contentStyle={{ background: '#86BC25', color: '#fff' }}
               contentArrowStyle={{ borderRight: '7px solid  #86BC25' }}
               iconStyle={{ background: '#86BC25', color: '#fff' }}
-              icon={<SchoolIcon />}
+              icon={ (task.pillar=='Specialisation') ? (buttonSpecialisation) : ((task.pillar=='Consulting') ? (buttonConsulting) : buttonMethodology) }
               key={task.id}
             >
               <h3 className="vertical-timeline-element-course">{task.course}</h3>
               <h4 className="vertical-timeline-element-subtitle">{task.pillar}</h4>
+
             </VerticalTimelineElement>
           ))}
         </VerticalTimeline>
+        <h1> KEY </h1>
+        <p>{ buttonMethodology } Methodology </p>
+        <p>{ buttonConsulting } Consulting </p>
+        <p>{ buttonSpecialisation } Specialisation</p>
+
       </React.Fragment>
     )
   }
