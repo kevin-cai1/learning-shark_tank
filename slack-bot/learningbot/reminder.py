@@ -119,6 +119,7 @@ def gen_block(course, end_date):
 			]
 		}
     ]
+    print(type(blocks))
     return blocks
 
 if __name__ == "__main__":
