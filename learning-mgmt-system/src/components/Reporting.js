@@ -69,9 +69,7 @@ class Reporting extends Component {
               position={"right"}
             >
               <h2 className="vertical-timeline-element-course">{task.course_name}</h2>
-
               <h3 className="vertical-timeline-element-course">User Count: {task.count_users}</h3>
-
             </VerticalTimelineElement>
           ))}
         </VerticalTimeline>

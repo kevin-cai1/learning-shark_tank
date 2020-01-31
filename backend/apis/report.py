@@ -21,7 +21,7 @@ class countAllEntries(Resource):
         entry_count = 0
         conn = db.get_conn() 
         c = conn.cursor() #cursor to execute commands
-        c.execute("SELECT Task.id, Task.name, COUNT(LearningEntry.task), Task.pillar as num FROM Task LEFT OUTER JOIN LearningEntry ON Task.id = LearningEntry.task GROUP BY Task.id") #quotes is SQL command/query. question mark defines placeholder, second part - give tuple 
+        c.execute("SELECT Task.id, Task.name, COUNT(LearningEntry.task), Task.pillar as num FROM Task LEFT OUTER JOIN LearningEntry ON Task.id = LearningEntry.task GROUP BY Task.id ORDER BY COUNT(LearningEntry.task) DESC") #quotes is SQL command/query. question mark defines placeholder, second part - give tuple 
         results = c.fetchall() # actually gets result from query 
         # fetch all is a list of lists 
 
