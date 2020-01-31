@@ -13,6 +13,9 @@ import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timel
 import 'react-vertical-timeline-component/style.min.css';
 
 import { getLearningActive } from './actions';
+import { getReportAll } from './actions';
+
+
 
 const styles = (theme) => ({
   toolbar: theme.mixins.toolbar,
@@ -34,7 +37,7 @@ class Reporting extends Component {
   }
 
   async componentDidMount() {
-    await this.props.getLearningActive();
+    await this.props.getReportAll();
     this.setState({tasks: this.props.plan.activePlan.entries})
   }
 
@@ -54,10 +57,9 @@ class Reporting extends Component {
         {this.state.length < 1 &&
         <div>You have no entries in your learning plan.</div>}
         <VerticalTimeline>
-          <h1>TO DO, DUMMY PAGE</h1>
+          <h1>Reporting</h1>
           {this.state.tasks.map((task) => (
             <VerticalTimelineElement
-              date={formatDate(task.start_date) + " to " + formatDate(task.end_date)}
               className="vertical-timeline-element--work"
               contentStyle={{ background: '#86BC25', color: '#fff' }}
               contentArrowStyle={{ borderRight: '7px solid  #86BC25' }}
@@ -66,8 +68,9 @@ class Reporting extends Component {
               key={task.id}
               position={"right"}
             >
-              <h3 className="vertical-timeline-element-course">{task.course}</h3>
-              <h4 className="vertical-timeline-element-subtitle">{task.pillar}</h4>
+              <h2 className="vertical-timeline-element-course">{task.course_name}</h2>
+
+              <h3 className="vertical-timeline-element-course">User Count: {task.count_users}</h3>
 
             </VerticalTimelineElement>
           ))}
@@ -93,6 +96,6 @@ const mapStateToProps = (state) => {
 }
 
 export default compose(
-  connect(mapStateToProps, { getLearningActive }),
+  connect(mapStateToProps, { getReportAll }),
   withStyles(styles)
 )(Reporting);

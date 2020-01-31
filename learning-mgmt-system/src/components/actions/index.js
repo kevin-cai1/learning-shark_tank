@@ -1,10 +1,11 @@
-import { learningPlan, learningEntry } from '../apis/learning';
+import { learningPlan, learningEntry, learningReport } from '../apis/learning';
 
 import {
   GET_LEARNING_ACTIVE,
   GET_LEARNING_ALL,
   GET_LEARNING_USER,
-  ADD_LEARNING_ENTRY
+  ADD_LEARNING_ENTRY,
+  GET_REPORT_ALL
 } from './types';
 
 export const getLearningActive = () => async(dispatch, getState) => {
@@ -30,4 +31,14 @@ export const addLearningEntry = (data) => async(getState) => {
 
   await learningEntry.post('/add/' + getState().login.email, headers)
     
+}
+
+export const getReportAll = () => async(dispatch) => {
+  await learningReport.get('/all')
+  .then(res => {
+    dispatch({ type: GET_REPORT_ALL, payload: res.data })
+  })
+  .catch(err => {
+    console.log(err)
+  })
 }
