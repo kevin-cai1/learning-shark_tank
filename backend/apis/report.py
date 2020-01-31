@@ -89,6 +89,44 @@ class getLearningPlan(Resource):
         return plans
 
 
+@api.route('/allByPillar') # for each task, count number of users with active/inactive tasks, sort by pillar
+class countAllEntries(Resource):
+    @api.doc(description="Return number of people who have elected complete each pillar")
+    @api.response(200, "Successful")
+    @api.response(404, "No learning plans found")
+    def get(self):
+        # get db = all entries
+        plans = {
+            'ok' : False,
+            'entry_count': 0,
+            'entries': list()
+        }
+
+        entry_count = 0
+        conn = db.get_conn() 
+        c = conn.cursor() #cursor to execute commands
+        c.execute("SELECT Task.pillar, COUNT(LearningEntry.task) as num FROM Task LEFT OUTER JOIN LearningEntry ON Task.id = LearningEntry.task GROUP BY Task.pillar ORDER BY COUNT(LearningEntry.task) DESC;") #quotes is SQL command/query. question mark defines placeholder, second part - give tuple 
+        results = c.fetchall() # actually gets result from query 
+        # fetch all is a list of lists 
+
+        if (results == []): # no result from database
+            api.abort(404, "No learning plans found",ok=False)
+
+        for entry in results:
+            course = {
+                'pillar': entry[0],
+                'count_users': entry[1],
+            }
+            entry_count = entry_count + 1
+            plans['entries'].append(course)
+
+        plans['ok'] = True
+        plans['entry_count'] = entry_count
+
+        conn.close() # make sure to close database 
+        return plans
+
+
 
 def generate_ID():
     conn = db.get_conn() 

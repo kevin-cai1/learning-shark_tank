@@ -2,7 +2,8 @@ import {
   GET_LEARNING_ACTIVE,
   GET_LEARNING_ALL,
   GET_LEARNING_USER,
-  GET_REPORT_ALL
+  GET_REPORT_ALL,
+  GET_REPORT_BY_PILLAR
 } from '../actions/types';
 
 const initialState = {
@@ -18,6 +19,9 @@ export default (state = initialState, action) => {
       newState.activePlan = action.payload
       return newState;
     case GET_REPORT_ALL:
+      newState.activePlan = action.payload
+      return newState;
+    case GET_REPORT_BY_PILLAR:
       newState.activePlan = action.payload
       return newState;
     default:

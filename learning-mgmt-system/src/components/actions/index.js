@@ -5,7 +5,8 @@ import {
   GET_LEARNING_ALL,
   GET_LEARNING_USER,
   ADD_LEARNING_ENTRY,
-  GET_REPORT_ALL
+  GET_REPORT_ALL,
+  GET_REPORT_BY_PILLAR
 } from './types';
 
 export const getLearningActive = () => async(dispatch, getState) => {
@@ -37,6 +38,16 @@ export const getReportAll = () => async(dispatch) => {
   await learningReport.get('/all')
   .then(res => {
     dispatch({ type: GET_REPORT_ALL, payload: res.data })
+  })
+  .catch(err => {
+    console.log(err)
+  })
+}
+
+export const getReportAllByPillar = () => async(dispatch) => {
+  await learningReport.get('/allByPillar')
+  .then(res => {
+    dispatch({ type: GET_REPORT_BY_PILLAR, payload: res.data })
   })
   .catch(err => {
     console.log(err)
