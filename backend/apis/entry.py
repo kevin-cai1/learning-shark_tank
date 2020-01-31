@@ -116,7 +116,7 @@ class updateEntry(Resource):
         # set properties for the entry specified 
         conn.commit()
 
-        c.execute("SELECT e.id, e.user, e.start_date, e.end_date, c.name, e.completed FROM LearningEntry e, Task c WHERE e.id = ? AND e.task=c.id", (entry_id,)) #quotes is SQL command/query. question mark defines placeholder, second part - give tuple 
+        c.execute("SELECT e.id, e.user, e.start_date, e.end_date, c.name, e.completed, FROM LearningEntry e, Task c WHERE e.id = ? AND e.task=c.id", (entry_id,)) #quotes is SQL command/query. question mark defines placeholder, second part - give tuple 
         results = c.fetchall()[0] # actually gets result from query 
         learning_entry = {
                 'id': results[0],

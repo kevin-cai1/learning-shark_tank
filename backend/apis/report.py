@@ -43,6 +43,7 @@ class countAllEntries(Resource):
         conn.close() # make sure to close database 
         return plans
 
+
 @api.route('/<string:task_id>') # for a particular task, return details of users currently learning
 @api.doc(params={'task_id': 'the task_id associated with the task'}) 
 class getLearningPlan(Resource):
