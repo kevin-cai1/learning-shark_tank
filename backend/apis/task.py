@@ -5,7 +5,7 @@ import re
 
 api = Namespace('task', description='Manage tasks (courses and certs)')
 
-task_data = api.model('entry',{
+task_data = api.model('task',{
     'name' : fields.String(description = 'Name of task to add in String format.'),
     'isCertificate' : fields.Boolean(description = '1 = task is certificate, 0 = task is course'),
     'pillar' : fields.String(description = 'Pillar the task belongs to.'),
