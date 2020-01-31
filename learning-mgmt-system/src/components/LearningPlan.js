@@ -7,11 +7,8 @@ import PeopleIcon from '@material-ui/icons/People';
 import SortIcon from '@material-ui/icons/Sort';
 
 import Fab from '@material-ui/core/Fab';
-<<<<<<< HEAD
 import SchoolIcon from '@material-ui/icons/School';
 import Button from '@material-ui/core/Button';
-=======
->>>>>>> master
 import AddIcon from '@material-ui/icons/Add';
 
 import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
@@ -102,11 +99,6 @@ class LearningPlan extends Component {
               </Button> }
               {/* this.markAsComplete(task.start_date,task.end_date,task.id */}
               <h4 className="vertical-timeline-element-subtitle">{task.pillar}</h4>
-<<<<<<< HEAD
-                 
-=======
-
->>>>>>> master
             </VerticalTimelineElement>
           ))}
         </VerticalTimeline>
@@ -118,10 +110,7 @@ class LearningPlan extends Component {
         <Fab color="secondary" aria-label="add" className={classes.addButton}>
           <AddIcon onClick={this.onClick}/>
         </Fab>
-<<<<<<< HEAD
-=======
         
->>>>>>> master
       </React.Fragment>
     )
   }
