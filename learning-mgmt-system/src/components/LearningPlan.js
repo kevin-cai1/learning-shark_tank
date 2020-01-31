@@ -4,21 +4,14 @@ import { compose } from 'redux';
 import { withStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import SchoolIcon from '@material-ui/icons/School';
-<<<<<<< HEAD:learning-mgmt-system/src/components/learningPlan/LearningPlan.js
 import Button from '@material-ui/core/Button';
-=======
 import AddIcon from '@material-ui/icons/Add';
->>>>>>> master:learning-mgmt-system/src/components/LearningPlan.js
 
 import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
 
-<<<<<<< HEAD:learning-mgmt-system/src/components/learningPlan/LearningPlan.js
-import { getLearningActive } from '../actions';
-import { learningEntry } from '../apis/learning.js';
-=======
 import { getLearningActive } from './actions';
->>>>>>> master:learning-mgmt-system/src/components/LearningPlan.js
+import { learningEntry } from './apis/learning.js';
 
 const styles = (theme) => ({
   toolbar: theme.mixins.toolbar,
@@ -40,6 +33,7 @@ class LearningPlan extends Component {
   }
 
   async markAsComplete(start_date, end_date, id) {
+    console.log('Hello');
     const headers = {
       headers: {
         'Content-Type': "application/json",
@@ -53,13 +47,8 @@ class LearningPlan extends Component {
         "id": id
     }
     await learningEntry.put('/' + id,body,headers)
-    .then(
-      async (response) => {
-        console.log(response)
-        await this.props.getLearningActive();
-        this.setState({tasks: this.props.plan.activePlan.entries})
-      }
-    )
+    await this.props.getLearningActive();
+    this.setState({tasks: this.props.plan.activePlan.entries})
   }
 
   async componentDidMount() {
@@ -70,6 +59,7 @@ class LearningPlan extends Component {
   onClick() {
     console.log('this was clicked')
   }
+
 
   render() {
     const {classes} = this.props
@@ -83,43 +73,31 @@ class LearningPlan extends Component {
             <VerticalTimelineElement
               date={formatDate(task.start_date) + " to " + formatDate(task.end_date)}
               className="vertical-timeline-element--work"
-              contentStyle={{ background: '#86BC25', color: '#fff' }}
+              contentStyle={(task.completed == true) ? ({background: '#86BC25', color: '#fff'}) : ({background: '#E96868',color: '#fff'})}
               contentArrowStyle={{ borderRight: '7px solid  #86BC25' }}
               iconStyle={{ background: '#86BC25', color: '#fff' }}
               icon={<SchoolIcon />}
-<<<<<<< HEAD:learning-mgmt-system/src/components/learningPlan/LearningPlan.js
-              //add button that calls markAsComplete(task.start_date,task.end_date,task.id)
-=======
               key={task.id}
               position={"right"}
->>>>>>> master:learning-mgmt-system/src/components/LearningPlan.js
             >
-              <Button 
-              variant="contained" color="primary">
-              Mark as Complete
-              </Button>
               <h3 className="vertical-timeline-element-course">{task.course}</h3>
+              {/* <div class="font-icon-wrapper" onClick={this.fontIconClick}>
+              <IconButton iconClassName="Mark as Complete" />
+              </div> */}
+              {task.completed == false &&
+              <Button 
+              variant="contained" onClick={() => {this.markAsComplete(task.start_date,task.end_date,task.id)}}>
+              Mark as Complete
+              </Button> }
+              {/* this.markAsComplete(task.start_date,task.end_date,task.id */}
               <h4 className="vertical-timeline-element-subtitle">{task.pillar}</h4>
+                 
             </VerticalTimelineElement>
           ))}
         </VerticalTimeline>
         <Fab color="secondary" aria-label="add" className={classes.addButton}>
           <AddIcon onClick={this.onClick}/>
         </Fab>
-        <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          className={classes.modal}
-          open={open}
-          onClose={handleClose}
-          closeAfterTransition
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            timeout: 500,
-          }}
-        >
-          
-        </Modal>
       </React.Fragment>
     )
   }
@@ -127,7 +105,8 @@ class LearningPlan extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    plan: state.plan
+    plan: state.plan,
+    login: state.login
   }
 }
 
