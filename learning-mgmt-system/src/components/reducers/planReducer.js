@@ -1,7 +1,8 @@
 import {
   GET_LEARNING_ACTIVE,
   GET_LEARNING_ALL,
-  GET_LEARNING_USER
+  GET_LEARNING_USER,
+  GET_REPORT_ALL
 } from '../actions/types';
 
 const initialState = {
@@ -14,6 +15,9 @@ export default (state = initialState, action) => {
   let newState = { ...state };
   switch(action.type) {
     case GET_LEARNING_ACTIVE:
+      newState.activePlan = action.payload
+      return newState;
+    case GET_REPORT_ALL:
       newState.activePlan = action.payload
       return newState;
     default:
