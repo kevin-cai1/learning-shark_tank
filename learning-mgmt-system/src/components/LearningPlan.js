@@ -7,12 +7,15 @@ import PeopleIcon from '@material-ui/icons/People';
 import SortIcon from '@material-ui/icons/Sort';
 
 import Fab from '@material-ui/core/Fab';
+import SchoolIcon from '@material-ui/icons/School';
+import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 
 import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
 
 import { getLearningActive } from './actions';
+import { learningEntry } from './apis/learning.js';
 
 const styles = (theme) => ({
   toolbar: theme.mixins.toolbar,
@@ -33,6 +36,25 @@ class LearningPlan extends Component {
     tasks: []
   }
 
+  async markAsComplete(start_date, end_date, id) {
+    console.log('Hello');
+    const headers = {
+      headers: {
+        'Content-Type': "application/json",
+      }
+    };
+    //body
+    const body = {
+        "start_date": start_date,
+        "end_date": end_date,
+        "completed": true,
+        "id": id
+    }
+    await learningEntry.put('/' + id,body,headers)
+    await this.props.getLearningActive();
+    this.setState({tasks: this.props.plan.activePlan.entries})
+  }
+
   async componentDidMount() {
     await this.props.getLearningActive();
     this.setState({tasks: this.props.plan.activePlan.entries})
@@ -41,6 +63,7 @@ class LearningPlan extends Component {
   onClick() {
     console.log('this was clicked')
   }
+
 
   render() {
     const {classes} = this.props
@@ -58,7 +81,7 @@ class LearningPlan extends Component {
             <VerticalTimelineElement
               date={formatDate(task.start_date) + " to " + formatDate(task.end_date)}
               className="vertical-timeline-element--work"
-              contentStyle={{ background: '#86BC25', color: '#fff' }}
+              contentStyle={(task.completed == true) ? ({background: '#86BC25', color: '#fff'}) : ({background: '#E96868',color: '#fff'})}
               contentArrowStyle={{ borderRight: '7px solid  #86BC25' }}
               iconStyle={{ background: '#86BC25', color: '#fff' }}
               icon={ (task.pillar=='Specialisation') ? (buttonSpecialisation) : ((task.pillar=='Consulting') ? (buttonConsulting) : buttonMethodology) }
@@ -66,8 +89,16 @@ class LearningPlan extends Component {
               position={"right"}
             >
               <h3 className="vertical-timeline-element-course">{task.course}</h3>
+              {/* <div class="font-icon-wrapper" onClick={this.fontIconClick}>
+              <IconButton iconClassName="Mark as Complete" />
+              </div> */}
+              {task.completed == false &&
+              <Button 
+              variant="contained" onClick={() => {this.markAsComplete(task.start_date,task.end_date,task.id)}}>
+              Mark as Complete
+              </Button> }
+              {/* this.markAsComplete(task.start_date,task.end_date,task.id */}
               <h4 className="vertical-timeline-element-subtitle">{task.pillar}</h4>
-
             </VerticalTimelineElement>
           ))}
         </VerticalTimeline>
@@ -87,7 +118,8 @@ class LearningPlan extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    plan: state.plan
+    plan: state.plan,
+    login: state.login
   }
 }
 

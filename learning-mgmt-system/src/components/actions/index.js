@@ -4,13 +4,14 @@ import {
   GET_LEARNING_ACTIVE,
   GET_LEARNING_ALL,
   GET_LEARNING_USER,
+  MARK_AS_COMPLETE,
   ADD_LEARNING_ENTRY,
   GET_REPORT_ALL,
   GET_REPORT_BY_PILLAR
 } from './types';
 
 export const getLearningActive = () => async(dispatch, getState) => {
-  await learningPlan.get('/active/' + getState().login.email)
+  await learningPlan.get('/' + getState().login.email)
     .then(res => {
       dispatch({ type: GET_LEARNING_ACTIVE, payload: res.data })
     })
@@ -19,6 +20,15 @@ export const getLearningActive = () => async(dispatch, getState) => {
     })
 }
 
+export const markAsComplete = (task) => async(dispatch, getState) => {
+  await learningEntry.put('/' + getState().login.email)
+  .then(res => {
+    dispatch({ type: markAsComplete, payload: res.data })
+  })
+  .catch(err => {
+    console.log(err)
+  })
+}
 export const addLearningEntry = (data) => async(getState) => {
   const headers = {
     headers: {
