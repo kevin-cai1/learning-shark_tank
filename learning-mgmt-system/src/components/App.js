@@ -7,8 +7,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import NavBar from './NavBar';
-import LearningPlan from './learningPlan/LearningPlan';
-import Calendar from './calendar/Calendar';
 
 const useStyles = makeStyles(theme => ({
   root: {

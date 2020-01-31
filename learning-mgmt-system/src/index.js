@@ -13,8 +13,8 @@ import * as serviceWorker from './serviceWorker';
 
 const initialState = {
     login: {
-        user: "Jackie Banh",
-        email: "jabanh@deloitte.com.au"
+        user: "Tamar Jacobs",
+        email: "tajacobs@deloitte.com.au"
     },
     plan: {
         activePlan: null,

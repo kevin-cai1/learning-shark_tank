@@ -22,6 +22,7 @@ CREATE TABLE Task (
     name            text,
     isCertificate   boolean,
     pillar          text,
+    specialisation  text,
     primary key     (id)
 );
 
