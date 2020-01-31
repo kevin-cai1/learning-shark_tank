@@ -1,6 +1,6 @@
 const initialState = {
-  user: "Jackie Banh",
-  email: "jabanh@deloitte.com.au"
+  user: "Tamar Jacobs",
+  email: "tajacobs@deloitte.com.au"
 }
 
 export default (state = initialState, action) => {
