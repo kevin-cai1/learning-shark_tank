@@ -7,3 +7,7 @@ export const learningEntry = axios.create({
 export const learningPlan = axios.create({
   baseURL: "http://localhost:5000/plan"
 });
+
+export const learningReport = axios.create({
+  baseURL: "http://localhost:5000/report"
+})
