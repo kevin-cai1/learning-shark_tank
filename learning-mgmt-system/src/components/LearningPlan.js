@@ -3,8 +3,12 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
+import Modal from '@material-ui/core/Modal';
 import SchoolIcon from '@material-ui/icons/School';
 import AddIcon from '@material-ui/icons/Add';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
 
 import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
@@ -27,7 +31,8 @@ function formatDate(date) {
 
 class LearningPlan extends Component {
   state = {
-    tasks: []
+    tasks: [],
+    openedForm: false
   }
 
   async componentDidMount() {
@@ -37,6 +42,11 @@ class LearningPlan extends Component {
 
   onClick() {
     console.log('this was clicked')
+    if (this.state.openForm) {
+      this.setState({openedForm: false});
+    } else {
+      this.setState({openedForm: true});
+    }
   }
 
   render() {
@@ -66,20 +76,21 @@ class LearningPlan extends Component {
         <Fab color="secondary" aria-label="add" className={classes.addButton}>
           <AddIcon onClick={this.onClick}/>
         </Fab>
-        <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          className={classes.modal}
-          open={open}
-          onClose={handleClose}
-          closeAfterTransition
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            timeout: 500,
-          }}
-        >
-          
-        </Modal>
+        <ClickAwayListener>
+          <Modal
+            aria-labelledby="transition-modal-title"
+            aria-describedby="transition-modal-description"
+            open={this.state.openedForm}
+            onClose={this.onClick}
+            closeAfterTransition
+            BackdropComponent={Backdrop}
+            BackdropProps={{
+              timeout: 500,
+            }}
+          >
+            
+          </Modal>
+        </ClickAwayListener>
       </React.Fragment>
     )
   }
@@ -87,7 +98,8 @@ class LearningPlan extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    plan: state.plan
+    plan: state.plan,
+    login: state.login
   }
 }
 
