@@ -83,7 +83,7 @@ class LearningPlan extends Component {
     }
     await learningEntry.put('/' + id,body,headers)
     await this.props.getLearningActive();
-    this.setState({tasks: this.props.plan.activePlan.entries})
+    this.setState({userTasks: this.props.plan.activePlan.entries})
   }
 
   addTask = async () => {
