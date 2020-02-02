@@ -17,7 +17,7 @@ const styles = (theme) => ({
   root: {
     display: 'flex',
     width: '100%',
-    position: 'absolute',
+    position: 'fixed',
     zIndex: 2,
   },
   heading: {
