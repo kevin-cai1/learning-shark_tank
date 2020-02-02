@@ -1,4 +1,4 @@
-import { learningPlan, learningEntry, learningReport } from '../apis/learning';
+import { learningPlan, learningEntry, learningReport, learningTask } from '../apis/learning';
 
 import {
   GET_LEARNING_ACTIVE,
@@ -7,7 +7,8 @@ import {
   MARK_AS_COMPLETE,
   ADD_LEARNING_ENTRY,
   GET_REPORT_ALL,
-  GET_REPORT_BY_PILLAR
+  GET_REPORT_BY_PILLAR,
+  GET_TASK_ALL
 } from './types';
 
 export const getLearningActive = () => async(dispatch, getState) => {
@@ -58,6 +59,16 @@ export const getReportAllByPillar = () => async(dispatch) => {
   await learningReport.get('/allByPillar')
   .then(res => {
     dispatch({ type: GET_REPORT_BY_PILLAR, payload: res.data })
+  })
+  .catch(err => {
+    console.log(err)
+  })
+}
+
+export const getAllTasks = () => async(dispatch) => {
+  await learningTask.get('/all')
+  .then(res => {
+    dispatch({ type: GET_TASK_ALL, payload: res.data })
   })
   .catch(err => {
     console.log(err)

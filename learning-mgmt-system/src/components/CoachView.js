@@ -76,10 +76,6 @@ class CoachView extends Component {
         <p>{ buttonMethodology } Methodology </p>
         <p>{ buttonConsulting } Consulting </p>
         <p>{ buttonSpecialisation } Specialisation</p>
-
-        <Fab color="secondary" aria-label="add" className={classes.addButton}>
-          <AddIcon onClick={this.onClick}/>
-        </Fab>
         
       </React.Fragment>
     )
