@@ -20,6 +20,9 @@ const initialState = {
         activePlan: null,
         userPlan: null,
         allPlan: null
+    },
+    task: {
+        allTasks: null
     }
 }
 

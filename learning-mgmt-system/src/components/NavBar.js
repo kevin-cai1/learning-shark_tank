@@ -8,13 +8,16 @@ import Tab from '@material-ui/core/Tab';
 
 import { Link, Switch, Route } from 'react-router-dom';
 import LearningPlan from './LearningPlan';
-import CalendarView from './CalendarView'
+import CalendarView from './CalendarView';
+import CoachView from './CoachView';
+import Reporting from './Reporting';
+
 
 const styles = (theme) => ({
   root: {
     display: 'flex',
     width: '100%',
-    position: 'absolute',
+    position: 'fixed',
     zIndex: 2,
   },
   heading: {
@@ -59,6 +62,16 @@ class NavBar extends Component {
                   value="/calendar"
                   component={Link} to="/calendar"
                   onClick = {() => this.handleClick('/calendar')} />
+                <Tab 
+                  label="Coach View"
+                  value="/coachview"
+                  component={Link} to="/coachview"
+                  onClick = {() => this.handleClick('/coachview')} />
+                <Tab 
+                  label="Reporting"
+                  value="/reporting"
+                  component={Link} to="/reporting"
+                  onClick = {() => this.handleClick('/reporting')} />
               </Tabs>
             </Toolbar>
           </AppBar>
@@ -72,6 +85,16 @@ class NavBar extends Component {
           <Route exact path="/calendar">
             <div className={classes.content}>
               <CalendarView />
+            </div>
+          </Route>
+          <Route exact path="/coachview">
+            <div className={classes.content}>
+              <CoachView />
+            </div>
+          </Route>
+          <Route exact path="/reporting">
+            <div className={classes.content}>
+              <Reporting />
             </div>
           </Route>
         </Switch>
