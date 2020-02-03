@@ -63,7 +63,7 @@ class CoachView extends Component {
           <VerticalTimeline
             className={classes.timeline}
           >
-            <h1>{coachee.id}</h1>
+            <h1>{coachee.name}</h1>
             {coachee.entries.map((task) => (
               <VerticalTimelineElement
                 date={formatDate(task.start_date) + " to " + formatDate(task.end_date)}
