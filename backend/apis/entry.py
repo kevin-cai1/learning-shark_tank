@@ -75,6 +75,36 @@ class updateEntry(Resource):
         }
         return return_val
 
+    @api.doc(description="Get info about specified learning entry")
+    def get(self, entry_id):
+        conn = db.get_conn()
+        c = conn.cursor()
+
+        c.execute("SELECT e.id, e.user, e.task, t.name, e.start_date, e.end_date, e.completed FROM LearningEntry e, Task t WHERE e.id = ? AND e.task = t.id", (entry_id,))
+
+        entry_res = c.fetchall()
+
+        if (entry_res == []): # no result from database
+            api.abort(404, "No learning plan found",ok=False)
+
+        entry = entry_res[0]
+        learning_entry = {
+            'id': entry[0],
+            'user': entry[1],
+            'start_date': entry[4],
+            'end_date': entry[5],
+            'task': entry[2],
+            'task_name': entry[3],
+            'completed': True if entry[6] == 1 else False
+        }
+        ret = {
+            "ok": False,
+            "entry": learning_entry
+        }
+        ret['ok'] = True
+        return ret
+
+
     @api.expect(update_payload)
     @api.response(404, "Entry not found")
     def put(self, entry_id):

@@ -1,10 +1,10 @@
-INSERT INTO User VALUES ('kevcai@deloitte.com.au', 'Kevin Cai', 'DPE', 'Vacationer', 'coach1@deloitte.com.au');
-INSERT INTO User VALUES ('sluong@deloitte.com.au', 'Serena Luong', 'DPE', 'Vacationer', 'coach@deloitte.com.au');
-INSERT INTO User VALUES ('tajacobs@deloitte.com.au', 'Tamar Jacobs', 'DPE', 'Vacationer', 'coach@deloitte.com.au');
-INSERT INTO User VALUES ('jabanh@deloitte.com.au', 'Jackie Banh', 'DPE', 'Vacationer', 'coach1@deloitte.com.au');
+INSERT INTO User VALUES ('kevcai@deloitte.com.au', 'Kevin Cai', 'DPE', 'Vacationer', 'abhgangwar@deloitte.com.au');
+INSERT INTO User VALUES ('sluong@deloitte.com.au', 'Serena Luong', 'DPE', 'Vacationer', 'abhgangwar@deloitte.com.au');
+INSERT INTO User VALUES ('tajacobs@deloitte.com.au', 'Tamar Jacobs', 'DPE', 'Vacationer', 'tlenger@deloitte.com.au');
+INSERT INTO User VALUES ('jabanh@deloitte.com.au', 'Jackie Banh', 'DPE', 'Vacationer', 'tlenger@deloitte.com.au');
 
-INSERT INTO Coach VALUES ('coach@deloitte.com.au', 'Coach');
-INSERT INTO Coach VALUES ('coach1@deloitte.com.au', 'Coach 1');
+INSERT INTO Coach VALUES ('tlenger@deloitte.com.au', 'Troy Lenger');
+INSERT INTO Coach VALUES ('abhgangwar@deloitte.com.au', 'Abhishek Gangwar');
 
 -- https://hub.deloittedigital.com.au/wiki/pages/viewpage.action?spaceKey=PEKM&title=_Training+Catalogue
 
@@ -63,6 +63,6 @@ INSERT INTO LearningEntry VALUES ('6','kevcai@deloitte.com.au', 2,'2020-03-23','
 INSERT INTO LearningEntry VALUES ('8','tajacobs@deloitte.com.au', 28,'2020-01-01','2020-01-10',1); -- completed
 INSERT INTO LearningEntry VALUES ('7','tajacobs@deloitte.com.au', 32,'2019-11-23','2020-01-20',0); -- overdue, not complete
 INSERT INTO LearningEntry VALUES ('2','tajacobs@deloitte.com.au', 5,'2020-01-23','2020-02-23',0); -- active
-INSERT INTO LearningEntry VALUES ('11','tajacobs@deloitte.com.au', 21,'2019-11-01','2020-02-30',0); -- active
+INSERT INTO LearningEntry VALUES ('11','tajacobs@deloitte.com.au', 21,'2019-11-01','2020-02-28',0); -- active
 INSERT INTO LearningEntry VALUES ('9','tajacobs@deloitte.com.au', 17,'2020-05-01','2020-07-31',0); -- future
 INSERT INTO LearningEntry VALUES ('10','tajacobs@deloitte.com.au', 12,'2020-08-01','2020-12-31',0); -- future

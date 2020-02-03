@@ -2,6 +2,7 @@ import requests
 import sys
 from pprint import pprint
 import json
+from datetime import datetime
 
 BOT_TOKEN = "xoxb-910569057991-913295056547-VclTdvlyWKNdVjnyWMnwWlsI"
 BOT_ID = ""
@@ -65,13 +66,27 @@ def remind():
 
     # go through database
     for slack_id, email in user_dict.items():
+        body = []
+        plans = get_request('https://learning-tracker-api.herokuapp.com/plan/active/{}'.format(email))
+        if (plans['ok'] == True):                   # specific user exists
+            if (plans['entry_count'] > 0):          # specific user in slack has active plans
+                for entry in plans['entries']:      # build message with all active entries
+                    #pprint(entry)
+                    #print(entry['end_date'])
+                    end_date = datetime.strptime(entry['end_date'], "%Y-%m-%d")
+                    formatted_date = end_date.strftime("%d %b, %Y")
+                    if (date_diff(end_date) < 7):           # due date is close - needs to be reminded
+                        body = body + gen_block(entry['course'], formatted_date)
+        if (body):
+            print(email)
+            send_message(slack_id, body)
 
-        # get_request(https://{}/plan/{email})
-        print(email)
         # send message to user with slack_id
-        message = gen_block("course from db", "end_date")
-        send_message(slack_id, message)
+        
 
+def date_diff(date):
+    diff = date - datetime.now()
+    return diff.days
         
 def gen_block(course, end_date):
     blocks = [
@@ -79,7 +94,7 @@ def gen_block(course, end_date):
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": "*REMINDER*\nYou have an upcoming deadline in your learning plan"
+				"text": "*REMINDER*\nYou have an upcoming/overdue deadline in your learning plan"
 			}
 		},
 		{
