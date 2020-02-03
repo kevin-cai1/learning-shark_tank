@@ -67,7 +67,7 @@ def remind():
     # go through database
     for slack_id, email in user_dict.items():
         body = []
-        plans = get_request('https://learning-planning-tracker.herokuapp.com/plan/active/{}'.format(email))
+        plans = get_request('https://learning-tracker-api.herokuapp.com/plan/active/{}'.format(email))
         if (plans['ok'] == True):                   # specific user exists
             if (plans['entry_count'] > 0):          # specific user in slack has active plans
                 for entry in plans['entries']:      # build message with all active entries
@@ -76,11 +76,10 @@ def remind():
                     end_date = datetime.strptime(entry['end_date'], "%Y-%m-%d")
                     formatted_date = end_date.strftime("%d %b, %Y")
                     if (date_diff(end_date) < 7):           # due date is close - needs to be reminded
-                        body = body + gen_block(entry['task_name'], formatted_date)
-
-                if (email == "sluong@deloitte.com.au"):     # temp check to prevent spamming
-                    print(email)
-                    send_message(slack_id, body)
+                        body = body + gen_block(entry['course'], formatted_date)
+        if (body):
+            print(email)
+            send_message(slack_id, body)
 
         # send message to user with slack_id
         
@@ -95,7 +94,7 @@ def gen_block(course, end_date):
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": "*REMINDER*\nYou have an upcoming deadline in your learning plan"
+				"text": "*REMINDER*\nYou have an upcoming/overdue deadline in your learning plan"
 			}
 		},
 		{
