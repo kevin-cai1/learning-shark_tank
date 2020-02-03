@@ -1,10 +1,10 @@
-INSERT INTO User VALUES ('kevcai@deloitte.com.au', 'Kevin Cai', 'DPE', 'Vacationer', 'coach1@deloitte.com.au');
-INSERT INTO User VALUES ('sluong@deloitte.com.au', 'Serena Luong', 'DPE', 'Vacationer', 'coach@deloitte.com.au');
-INSERT INTO User VALUES ('tajacobs@deloitte.com.au', 'Tamar Jacobs', 'DPE', 'Vacationer', 'coach@deloitte.com.au');
-INSERT INTO User VALUES ('jabanh@deloitte.com.au', 'Jackie Banh', 'DPE', 'Vacationer', 'coach1@deloitte.com.au');
+INSERT INTO User VALUES ('kevcai@deloitte.com.au', 'Kevin Cai', 'DPE', 'Vacationer', 'abhgangwar@deloitte.com.au');
+INSERT INTO User VALUES ('sluong@deloitte.com.au', 'Serena Luong', 'DPE', 'Vacationer', 'abhgangwar@deloitte.com.au');
+INSERT INTO User VALUES ('tajacobs@deloitte.com.au', 'Tamar Jacobs', 'DPE', 'Vacationer', 'tlenger@deloitte.com.au');
+INSERT INTO User VALUES ('jabanh@deloitte.com.au', 'Jackie Banh', 'DPE', 'Vacationer', 'tlenger@deloitte.com.au');
 
-INSERT INTO Coach VALUES ('coach@deloitte.com.au', 'Coach');
-INSERT INTO Coach VALUES ('coach1@deloitte.com.au', 'Coach 1');
+INSERT INTO Coach VALUES ('tlenger@deloitte.com.au', 'Troy Lenger');
+INSERT INTO Coach VALUES ('abhgangwar@deloitte.com.au', 'Abhishek Gangwar');
 
 -- https://hub.deloittedigital.com.au/wiki/pages/viewpage.action?spaceKey=PEKM&title=_Training+Catalogue
 
