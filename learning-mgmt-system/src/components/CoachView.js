@@ -12,7 +12,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
 
-import { getLearningActive } from './actions';
+import { getCoacheeTask } from './actions';
 
 const styles = (theme) => ({
   toolbar: theme.mixins.toolbar,
@@ -20,6 +20,12 @@ const styles = (theme) => ({
     "right": "20px",
     "bottom": "20px",
     "position": "absolute"
+  },
+  timeline: {
+    "float": "left",
+    "width": "50%",
+    "padding-left": "20px",
+    "padding-right": "20px"
   }
 });
 
@@ -30,12 +36,12 @@ function formatDate(date) {
 
 class CoachView extends Component {
   state = {
-    tasks: []
+    coachees: []
   }
 
   async componentDidMount() {
-    await this.props.getLearningActive();
-    this.setState({tasks: this.props.plan.activePlan.entries})
+    await this.props.getCoacheeTask();
+    this.setState({coachees: this.props.coach.coachees.users})
   }
 
   onClick() {
@@ -52,26 +58,30 @@ class CoachView extends Component {
     return(
       <React.Fragment>
         {this.state.length < 1 &&
-        <div>You have no entries in your learning plan.</div>}
-        <VerticalTimeline>
-          <h1>TO DO, DUMMY PAGE</h1>
-          {this.state.tasks.map((task) => (
-            <VerticalTimelineElement
-              date={formatDate(task.start_date) + " to " + formatDate(task.end_date)}
-              className="vertical-timeline-element--work"
-              contentStyle={{ background: '#86BC25', color: '#fff' }}
-              contentArrowStyle={{ borderRight: '7px solid  #86BC25' }}
-              iconStyle={{ background: '#86BC25', color: '#fff' }}
-              icon={ (task.pillar=='Specialisation') ? (buttonSpecialisation) : ((task.pillar=='Consulting') ? (buttonConsulting) : buttonMethodology) }
-              key={task.id}
-              position={"right"}
-            >
-              <h3 className="vertical-timeline-element-course">{task.course}</h3>
-              <h4 className="vertical-timeline-element-subtitle">{task.pillar}</h4>
-
-            </VerticalTimelineElement>
-          ))}
-        </VerticalTimeline>
+        <div>You have no coachees :(</div>}
+        {this.state.coachees.map((coachee) => (
+          <VerticalTimeline
+            className={classes.timeline}
+          >
+            <h1>{coachee.name}</h1>
+            {coachee.entries.map((task) => (
+              <VerticalTimelineElement
+                date={formatDate(task.start_date) + " to " + formatDate(task.end_date)}
+                className="vertical-timeline-element--work"
+                contentStyle={(task.completed == true) ? ({background: '#86BC25', color: '#fff'}) : ({background: '#E96868',color: '#fff'})}
+                contentArrowStyle={(task.completed == true) ? { borderRight: '7px solid  #86BC25' } : ({ borderRight: '7px solid #E96868'})}
+                iconStyle={{ background: '#86BC25', color: '#fff' }}
+                icon={ (task.pillar=='Specialisation') ? (buttonSpecialisation) : ((task.pillar=='Consulting') ? (buttonConsulting) : buttonMethodology) }
+                key={task.id}
+                position={"right"}
+              >
+                <h3 className="vertical-timeline-element-course">{task.course}</h3>
+                <h4 className="vertical-timeline-element-subtitle">{task.pillar}</h4>
+              </VerticalTimelineElement>
+            ))}
+          </VerticalTimeline>
+        ))}
+        <br />
         <h1> KEY </h1>
         <p>{ buttonMethodology } Methodology </p>
         <p>{ buttonConsulting } Consulting </p>
@@ -84,11 +94,11 @@ class CoachView extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    plan: state.plan
+    coach: state.coach
   }
 }
 
 export default compose(
-  connect(mapStateToProps, { getLearningActive }),
+  connect(mapStateToProps, { getCoacheeTask }),
   withStyles(styles)
 )(CoachView);

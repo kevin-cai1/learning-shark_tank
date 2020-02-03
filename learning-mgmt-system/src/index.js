@@ -23,6 +23,9 @@ const initialState = {
     },
     task: {
         allTasks: null
+    },
+    coach: {
+        coachees: null
     }
 }
 

@@ -13,3 +13,5 @@ export const GET_REPORT_ALL = 'get_report_all';
 export const GET_REPORT_BY_PILLAR = 'get_report_by_pillar';
 
 export const GET_TASK_ALL = 'get_task_all';
+
+export const GET_COACHEE_TASK = 'get_coachee_task'
