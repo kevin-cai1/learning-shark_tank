@@ -120,7 +120,7 @@ class getActiveEntries(Resource):
         if (user_check == 0):   # user doesn't exist
             api.abort(404, "User '{}' doesn't exist".format(user_id),ok=False)
 
-        c.execute("SELECT e.id, e.user, e.start_date, e.end_date, c.name, c.pillar, e.task  FROM LearningEntry e, Task c WHERE e.task = c.id AND user = ? AND (e.start_date < (SELECT strftime('%Y-%m-%d', 'now'))) AND e.completed = 0 ORDER BY e.start_date", (user_id,)) #quotes is SQL command/query. question mark defines placeholder, second part - give tuple 
+        c.execute("SELECT e.id, e.user, e.start_date, e.end_date, c.name, c.pillar, e.task FROM LearningEntry e, Task c WHERE e.task = c.id AND user = ? AND (e.start_date < (SELECT strftime('%Y-%m-%d', 'now'))) AND e.completed = 0 ORDER BY e.start_date", (user_id,)) #quotes is SQL command/query. question mark defines placeholder, second part - give tuple 
         results = c.fetchall() # actually gets result from query 
         # fetch all is a list of lists 
         conn.close() # make sure to close database 

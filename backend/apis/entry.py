@@ -68,7 +68,7 @@ class updateEntry(Resource):
 
         c.execute("DELETE FROM LearningEntry WHERE id = ?", (entry_id,))
 
-        conn.commit
+        conn.commit()
         conn.close()
         return_val = {
             'ok' : True
