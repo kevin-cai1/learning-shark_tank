@@ -29,7 +29,7 @@ class getLearningPlan(Resource):
             api.abort(404, "User '{}' doesn't exist".format(user_id),ok=False)
 
 
-        c.execute("SELECT e.id, e.user, e.start_date, e.end_date, c.name, c.pillar, e.task, e.completed, c.name FROM LearningEntry e, Task c WHERE e.task = c.id AND user = ? ORDER BY e.start_date, e.end_date", (user_id,)) #quotes is SQL command/query. question mark defines placeholder, second part - give tuple 
+        c.execute("SELECT e.id, e.user, e.start_date, e.end_date, c.name, c.pillar, e.task, e.completed FROM LearningEntry e, Task c WHERE e.task = c.id AND user = ? ORDER BY e.start_date, e.end_date", (user_id,)) #quotes is SQL command/query. question mark defines placeholder, second part - give tuple 
         results = c.fetchall() # actually gets result from query 
         # fetch all is a list of lists 
         conn.close() # make sure to close database 
@@ -46,8 +46,7 @@ class getLearningPlan(Resource):
                 'course': entry[4],
                 'pillar': entry[5],
                 'task_id': entry[6],
-                'completed': entry[7],
-                'task_name': entry[8]
+                'completed': entry[7]
             }
             entry_count = entry_count + 1
             learning_plan['entries'].append(learning_entry)
@@ -72,7 +71,7 @@ class getAllEntries(Resource):
         entry_count = 0
         conn = db.get_conn() 
         c = conn.cursor() #cursor to execute commands
-        c.execute("SELECT e.id, e.user, e.start_date, e.end_date, c.name, c.pillar, e.task, c.name FROM LearningEntry e INNER JOIN Task c ON e.task = c.id ORDER BY e.start_date") #quotes is SQL command/query. question mark defines placeholder, second part - give tuple 
+        c.execute("SELECT e.id, e.user, e.start_date, e.end_date, c.name, c.pillar, e.task FROM LearningEntry e INNER JOIN Task c ON e.task = c.id ORDER BY e.start_date") #quotes is SQL command/query. question mark defines placeholder, second part - give tuple 
         results = c.fetchall() # actually gets result from query 
         # fetch all is a list of lists 
         conn.close() # make sure to close database 
@@ -88,8 +87,7 @@ class getAllEntries(Resource):
                 'end_date': entry[3],
                 'course': entry[4],
                 'pillar': entry[5],
-                'task_id': entry[6],
-                'task_name': entry[7]
+                'task_id': entry[6]
             }
             entry_count = entry_count + 1
             plans['entries'].append(learning_entry)
@@ -122,7 +120,7 @@ class getActiveEntries(Resource):
         if (user_check == 0):   # user doesn't exist
             api.abort(404, "User '{}' doesn't exist".format(user_id),ok=False)
 
-        c.execute("SELECT e.id, e.user, e.start_date, e.end_date, c.name, c.pillar, e.task, c.name FROM LearningEntry e, Task c WHERE e.task = c.id AND user = ? AND (e.start_date < (SELECT strftime('%Y-%m-%d', 'now'))) AND e.completed = 0 ORDER BY e.start_date", (user_id,)) #quotes is SQL command/query. question mark defines placeholder, second part - give tuple 
+        c.execute("SELECT e.id, e.user, e.start_date, e.end_date, c.name, c.pillar, e.task  FROM LearningEntry e, Task c WHERE e.task = c.id AND user = ? AND (e.start_date < (SELECT strftime('%Y-%m-%d', 'now'))) AND e.completed = 0 ORDER BY e.start_date", (user_id,)) #quotes is SQL command/query. question mark defines placeholder, second part - give tuple 
         results = c.fetchall() # actually gets result from query 
         # fetch all is a list of lists 
         conn.close() # make sure to close database 
@@ -134,8 +132,7 @@ class getActiveEntries(Resource):
                 'end_date': entry[3],
                 'course': entry[4],
                 'pillar': entry[5],
-                'task_id': entry[6],
-                'task_name': entry[7]
+                'task_id': entry[6]
             }
             entry_count = entry_count + 1
             learning_plan['entries'].append(learning_entry)
@@ -166,7 +163,7 @@ class getActiveEntries(Resource):
         if (user_check == 0):   # user doesn't exist
             api.abort(404, "User '{}' doesn't exist".format(user_id),ok=False)
 
-        c.execute("SELECT e.id, e.user, e.start_date, e.end_date, c.name, c.pillar, e.task, c.name FROM LearningEntry e, Task c WHERE e.task = c.id AND user = ? AND (e.end_date < (SELECT strftime('%Y-%m-%d', 'now'))) AND e.completed = False ORDER BY e.start_date;", (user_id,))
+        c.execute("SELECT e.id, e.user, e.start_date, e.end_date, c.name, c.pillar, e.task FROM LearningEntry e, Task c WHERE e.task = c.id AND user = ? AND (e.end_date < (SELECT strftime('%Y-%m-%d', 'now'))) AND e.completed = False ORDER BY e.start_date;", (user_id,))
         results = c.fetchall() # actually gets result from query 
         # fetch all is a list of lists 
         conn.close() # make sure to close database 
@@ -178,8 +175,7 @@ class getActiveEntries(Resource):
                 'end_date': entry[3],
                 'course': entry[4],
                 'pillar': entry[5],
-                'task_id': entry[6],
-                'task_name': entry[7]           
+                'task_id': entry[6]      
             }
             entry_count = entry_count + 1
             learning_plan['entries'].append(learning_entry)

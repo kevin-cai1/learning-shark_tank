@@ -20,7 +20,7 @@ class viewCoacheePlans(Resource):
         entry_count = 0
         conn = db.get_conn() 
         c = conn.cursor() #cursor to execute commands
-        c.execute("SELECT email from User WHERE coach = ?", (coach_id,))
+        c.execute("SELECT email, name from User WHERE coach = ?", (coach_id,))
         #c.execute("SELECT id, user, task, start_date, end_date, completed FROM LearningEntry WHERE user in (SELECT email FROM User WHERE coach = ?) ORDER BY start_date", (coach_id,)) #quotes is SQL command/query. question mark defines placeholder, second part - give tuple 
         results = c.fetchall() # actually gets result from query 
         # fetch all is a list of lists 
@@ -28,12 +28,13 @@ class viewCoacheePlans(Resource):
         if (results == []): # no result from database
             api.abort(404, "No learning plans found",ok=False)
         users = [r[0] for r in results]
-        for user in users:
-            print(user)
-            c.execute("SELECT e.id, e.user, e.task, e.start_date, e.end_date, e.completed, t.pillar, t.name FROM LearningEntry e, Task t WHERE e.task = t.id AND user = ?", (user,))
+        names = [r[1] for r in results]
+        for i in range(len(results)):
+            c.execute("SELECT e.id, e.user, e.task, e.start_date, e.end_date, e.completed, t.pillar, t.name FROM LearningEntry e, Task t WHERE e.task = t.id AND user = ?", (users[i],))
             results = c.fetchall()
             user = {
-                'id': user,
+                'id': users[i],
+                'name': names[i],
                 'entry_count': 0,
                 'entries': list()
             }
@@ -52,6 +53,7 @@ class viewCoacheePlans(Resource):
                 user['entry_count'] = user['entry_count'] + 1
             user_plans['users'].append(user)
             user_plans['user_count'] = user_plans['user_count'] + 1
+            user_plans['ok'] = True
 
         conn.close() # make sure to close database 
         return user_plans
