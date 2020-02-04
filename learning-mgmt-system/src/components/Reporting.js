@@ -6,25 +6,17 @@ import { withStyles } from '@material-ui/core/styles';
 import CodeIcon from '@material-ui/icons/Code';
 import PeopleIcon from '@material-ui/icons/People';
 import SortIcon from '@material-ui/icons/Sort';
-
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
-import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
 
-import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import { buildStyles } from 'react-circular-progressbar';
 
-
-import { getLearningActive } from './actions';
 import { getReportAll } from './actions';
 import { getReportAllByPillar } from './actions';
-import { Box, Icon } from '@material-ui/core';
-
-
 
 const styles = (theme) => ({
   toolbar: theme.mixins.toolbar,
@@ -34,20 +26,6 @@ const styles = (theme) => ({
     "position": "absolute"
   }
 });
-
-function formatDate(date) {
-  //format date from yyyy-mm-dd to dd/mm/yyyy
-  return date.substring(8,10) + '/' + date.substring(5,7) + '/' + date.substring(0,4)
-}
-
-const defaultProps = {
-  background: '#86BC25', 
-  color: '#fff',
-  borderColor: 'text.primary',
-  m: 1,
-  border: 1,
-  style: { width: '5rem', height: '5rem' },
-};
 
 class Reporting extends Component {
   state = {
@@ -73,14 +51,6 @@ render() {
   var buttonConsulting = <PeopleIcon />
   var buttonMethodology = <SortIcon />
   const value = 11
-
-  const reducer = (accumulator, currentValue) => accumulator + currentValue;
-  var i = 0
-
-  const divStyle = {
-    display: 'flex',
-    alignItems: 'center'
-  };
   
   return(
     <React.Fragment>
