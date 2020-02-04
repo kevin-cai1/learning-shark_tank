@@ -88,16 +88,16 @@ render() {
       {this.state.length < 1 &&
       <div>You have no entries in your learning plan.</div>}
       {this.state.pillar.map((task) => (
-        <div style= {{float: "left", margin:"50px"}} ><CircularProgressbarWithChildren
-            
-          value= {[task.count_users]}
-          maxValue = {value}
-          styles={buildStyles({
-            pathColor: '#86BC25',
-            padding: '50px',
-            pathTransitionDuration: 3,
-          }) }
-        >
+        <div style= {{float: "left", margin:"50px"}} >
+          <CircularProgressbarWithChildren
+            value= {[task.count_users]}
+            maxValue = {value}
+            styles={buildStyles({
+              pathColor: '#86BC25',
+              padding: '50px',
+              pathTransitionDuration: 3,
+            }) }
+          >
           <div style={{ fontSize: 20, marginTop: -5 }}>
             <center>
               {(task.pillar=='Specialisation') ? (buttonSpecialisation) : ((task.pillar=='Consulting') ? (buttonConsulting) : buttonMethodology) } <br />
@@ -116,7 +116,7 @@ render() {
       </Fab>
       <br />
       
-      <table align="center" style={{borderRadius: '15px', float:"left", marginLeft: "100px", marginRight:"100px"}}>
+      <table align="center" style={{borderRadius: '15px', float:"right", marginLeft: "100px", marginRight:"100px"}}>
         <thead>
           <td><h2>Pillar</h2></td>
           <td><h2><center>Task Name</center></h2></td>
@@ -136,18 +136,15 @@ render() {
           <p>{ buttonConsulting } Consulting </p>
           <p>{ buttonSpecialisation } Specialisation</p>
       </div>
-      
     </React.Fragment>
-
-    
   )
 }
 }
 
 const mapStateToProps = (state) => {
-return {
-  plan: state.plan
-}
+  return {
+    plan: state.plan
+  }
 }
 
 export default compose(

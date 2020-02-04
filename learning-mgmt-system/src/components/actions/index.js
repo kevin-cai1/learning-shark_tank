@@ -56,7 +56,7 @@ export const getReportAll = () => async(dispatch) => {
 }
 
 export const getReportAllByPillar = () => async(dispatch) => {
-  await learningReport.get('/allByPillar')
+  await learningReport.get('/all/pillar')
   .then(res => {
     dispatch({ type: GET_REPORT_BY_PILLAR, payload: res.data })
   })
