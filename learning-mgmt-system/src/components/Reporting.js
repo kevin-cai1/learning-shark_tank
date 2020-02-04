@@ -109,11 +109,6 @@ render() {
           </div>
         </CircularProgressbarWithChildren></div>
       ))}
-
-
-      <Fab color="secondary" aria-label="add" className={classes.addButton}>
-        <AddIcon onClick={this.onClick}/>
-      </Fab>
       <br />
       
       <table align="center" style={{borderRadius: '15px', float:"right", marginLeft: "100px", marginRight:"100px"}}>

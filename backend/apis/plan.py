@@ -9,10 +9,7 @@ api = Namespace('plan', description='Learning Plan specific operations')
 @api.route('/<string:user_id>')
 @api.doc(params={'user_id': 'the email address associated with a user'}) #userID is email
 class getLearningPlan(Resource):
-    @api.doc(description="Return learning plan associated with the given user")
-    @api.response(200, "Successful")
-    @api.response(404, "No learning entries found")
-    @api.response(404, "User not found")
+    @api.doc(description="Return full learning plan associated with the given user")
     def get(self, user_id):
         learning_plan = { #dictionary
             'ok': False,
@@ -99,7 +96,7 @@ class getAllEntries(Resource):
 @api.route('/active/<string:user_id>')
 @api.doc(params={'user_id': 'the email address associated with a user'})
 class getActiveEntries(Resource):
-    @api.doc(description="Retrieves entries currently in progress")
+    @api.doc(description="Retrieves entries currently in progress for a given user")
     @api.response(200, "Successful")
     @api.response(404, "User not found")
 
@@ -120,7 +117,7 @@ class getActiveEntries(Resource):
         if (user_check == 0):   # user doesn't exist
             api.abort(404, "User '{}' doesn't exist".format(user_id),ok=False)
 
-        c.execute("SELECT e.id, e.user, e.start_date, e.end_date, c.name, c.pillar, e.task  FROM LearningEntry e, Task c WHERE e.task = c.id AND user = ? AND (e.start_date < (SELECT strftime('%Y-%m-%d', 'now'))) AND e.completed = 0 ORDER BY e.start_date", (user_id,)) #quotes is SQL command/query. question mark defines placeholder, second part - give tuple 
+        c.execute("SELECT e.id, e.user, e.start_date, e.end_date, c.name, c.pillar, e.task FROM LearningEntry e, Task c WHERE e.task = c.id AND user = ? AND (e.start_date <= (SELECT strftime('%Y-%m-%d', 'now'))) AND e.completed = 0 ORDER BY e.start_date", (user_id,)) #quotes is SQL command/query. question mark defines placeholder, second part - give tuple 
         results = c.fetchall() # actually gets result from query 
         # fetch all is a list of lists 
         conn.close() # make sure to close database 
@@ -143,7 +140,7 @@ class getActiveEntries(Resource):
 @api.route('/overdue/<string:user_id>')
 @api.doc(params={'user_id': 'the email address associated with a user'})
 class getActiveEntries(Resource):
-    @api.doc(description="Retrieves entries currently overdue")
+    @api.doc(description="Retrieves entries currently overdue for a given user")
     @api.response(200, "Successful")
     @api.response(404, "User not found")
 

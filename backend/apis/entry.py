@@ -7,22 +7,21 @@ api = Namespace('entry', description='Entry specific operations')
 
 entry_data = api.model('entry',{
     'task' : fields.Integer(description = 'Task individual intends to complete i.e. certification, course, exam'),
-    'start_date' : fields.DateTime(description = 'Date individual intends to start the task'),
-    'end_date' : fields.DateTime(description = 'Date individual intends to have completed the task'),
+    'start_date' : fields.DateTime(description = 'Date individual intends to start the task. Format (%YYYY-%m-%d)'),
+    'end_date' : fields.DateTime(description = 'Date individual intends to have completed the task. Format (%YYYY-%m-%d)'),
 })
 
 update_payload = api.model('update', {
-    'start_date' : fields.DateTime(description = 'New start date'),
-    'end_date' : fields.DateTime(description = 'New end date'),
+    'start_date' : fields.DateTime(description = 'New start date. Format (%YYYY-%m-%d)'),
+    'end_date' : fields.DateTime(description = 'New end date. Format (%YYYY-%m-%d)'),
     'completed' : fields.Boolean(description = 'True/False for if the current learning entry has been completed')
 })
 
 @api.route('/add/<string:user_id>') #2 functions - add and delete
-@api.doc(params={'user_id': 'the email address associated with a user'})
+@api.doc(params={'user_id': 'the email address associated with an existing user'})
 class entryFunctions(Resource):
-    @api.doc(description="Adds new entry")
+    @api.doc(description="Add new learning entry into the system")
     @api.doc(params={'user_id': 'the email address associated with a user'})
-    #@api.response(201, "Created successfully") #Ideally but in most cases 200
     @api.expect(entry_data)
     def post(self,user_id): 
         req = request.get_json(force=True)
@@ -30,6 +29,18 @@ class entryFunctions(Resource):
             api.abort(400,"Incorrect date format",ok=False)
         conn = db.get_conn() 
         c = conn.cursor() #cursor to execute commands
+        c.execute("SELECT EXISTS(SELECT name FROM User WHERE email = ?)", (user_id,))  
+        user_check = c.fetchone()[0]    # returns 1 if exists, otherwise 0
+
+        if (user_check == 0):   # user doesn't exist
+            api.abort(404, "User '{}' doesn't exist".format(user_id),ok=False)
+
+        c.execute("SELECT EXISTS(SELECT * FROM Task WHERE id = ?)", (req['task'],))  
+        task_check = c.fetchone()[0]    # returns 1 if exists, otherwise 0
+
+        if (task_check == 0):   # user doesn't exist
+            api.abort(404, "Task '{}' doesn't exist".format(req['task']),ok=False)
+
         new_id = generate_ID()
         c.execute('INSERT INTO LearningEntry values(?,?,?,?,?,0)',(new_id, user_id, req['task'],req['start_date'],req['end_date'],),)
         conn.commit()
@@ -51,11 +62,9 @@ class entryFunctions(Resource):
         return return_val
 
 @api.route('/<int:entry_id>')
-@api.doc(params={'entry_id': 'the learning entry id associated with the current entry'})
+@api.doc(params={'entry_id': 'the id from an existing learning entry within the system'})
 class updateEntry(Resource):
     @api.doc(description="Deletes specified entry")
-    @api.response(200, "Successful")     
-    @api.response(404, "Entry not found")
     def delete(self, entry_id):
         conn = db.get_conn()
         c = conn.cursor()
@@ -68,7 +77,7 @@ class updateEntry(Resource):
 
         c.execute("DELETE FROM LearningEntry WHERE id = ?", (entry_id,))
 
-        conn.commit
+        conn.commit()
         conn.close()
         return_val = {
             'ok' : True
@@ -106,7 +115,7 @@ class updateEntry(Resource):
 
 
     @api.expect(update_payload)
-    @api.response(404, "Entry not found")
+    @api.doc(description="Edit properties of a specified learning entry")
     def put(self, entry_id):
         # take in a payload,
         req = request.get_json(force=True)

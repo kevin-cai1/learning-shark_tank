@@ -15,3 +15,7 @@ export const learningReport = axios.create({
 export const learningTask = axios.create({
   baseURL: "http://localhost:5000/task"
 })
+
+export const learningCoach = axios.create({
+  baseURL: "http://localhost:5000/coach"
+})

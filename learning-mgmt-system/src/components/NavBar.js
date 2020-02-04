@@ -58,11 +58,6 @@ class NavBar extends Component {
                   component={Link} to="/" 
                   onClick = {() => this.handleClick('/')}/>
                 <Tab 
-                  label="Calendar"
-                  value="/calendar"
-                  component={Link} to="/calendar"
-                  onClick = {() => this.handleClick('/calendar')} />
-                <Tab 
                   label="Coach View"
                   value="/coachview"
                   component={Link} to="/coachview"

@@ -1,4 +1,4 @@
-import { learningPlan, learningEntry, learningReport, learningTask } from '../apis/learning';
+import { learningPlan, learningEntry, learningReport, learningTask, learningCoach } from '../apis/learning';
 
 import {
   GET_LEARNING_ACTIVE,
@@ -8,7 +8,8 @@ import {
   ADD_LEARNING_ENTRY,
   GET_REPORT_ALL,
   GET_REPORT_BY_PILLAR,
-  GET_TASK_ALL
+  GET_TASK_ALL,
+  GET_COACHEE_TASK
 } from './types';
 
 export const getLearningActive = () => async(dispatch, getState) => {
@@ -73,4 +74,14 @@ export const getAllTasks = () => async(dispatch) => {
   .catch(err => {
     console.log(err)
   })
+}
+
+export const getCoacheeTask = () => async(dispatch) => {
+  await learningCoach.get('/plans/tlenger@deloitte.com.au')
+    .then(res => {
+      dispatch({type: GET_COACHEE_TASK, payload: res.data})
+    })
+    .catch(err => {
+      console.log(err)
+    })
 }

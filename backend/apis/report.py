@@ -48,8 +48,8 @@ class countAllEntries(Resource):
 
 @api.route('/<string:task_id>') # for a particular task, return details of users currently learning
 @api.doc(params={'task_id': 'the task_id associated with the task'}) 
-class getLearningPlan(Resource):
-    @api.doc(description="Return user data related to a specific task if task if ACTIVE")
+class getEntryReport(Resource):
+    @api.doc(description="Return user data related to a specific task if task is ACTIVE")
     @api.response(200, "Successful")
     @api.response(404, "No data found")
     @api.response(404, "Task not found")
@@ -89,9 +89,9 @@ class getLearningPlan(Resource):
         return plans
 
 
-@api.route('/allByPillar') # for each task, count number of users with active/inactive tasks, sort by pillar
-class countAllEntries(Resource):
-    @api.doc(description="Return number of people who have elected complete each pillar")
+@api.route('/all/pillar') # for each task, count number of users with active/inactive tasks, sort by pillar
+class countAllPillarEntries(Resource):
+    @api.doc(description="Return number of people who have learning entries in each pillar")
     @api.response(200, "Successful")
     @api.response(404, "No learning plans found")
     def get(self):
@@ -125,30 +125,3 @@ class countAllEntries(Resource):
 
         conn.close() # make sure to close database 
         return plans
-
-
-
-def generate_ID():
-    conn = db.get_conn() 
-    c = conn.cursor() #cursor to execute commands
-    c.execute('SELECT MAX(id) FROM LearningEntry')
-    val = c.fetchone()[0]
-    return val+1
-
-def formatDate(dattime):
-    date = datetime.strptime(dattime, '%Y-%m-%d')
-    return date
-
-def checkFormat(date):
-    val = re.match("^\d{4}-\d{2}-\d{2}$",date)
-    print(val)
-    if (val != None):
-        return True
-    else:
-        return False
-
-def convertBool(val):
-    if (val == True):
-        return 1
-    else:
-        return 0
