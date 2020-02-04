@@ -14,8 +14,8 @@ task_data = api.model('task',{
 
 @api.route('/all') # for each task, count number of users with active/inactive tasks on their learning plan 
 class getTaskCollection(Resource):
-    @api.doc(description="Return list of tasks")
-    @api.response(200, "Successful")
+    @api.doc(description="Return list of all tasks")
+    @api.response(200, "Success")
     @api.response(404, "No tasks found")
     def get(self):
         tasks = {
@@ -83,7 +83,7 @@ class addTask(Resource):
 @api.doc(params={'task_id': 'the task entry id associated with the task'})
 class deleteTask(Resource):
     @api.doc(description="Deletes specified task")
-    @api.response(200, "Successful")     
+    @api.response(200, "Success")     
     @api.response(404, "Entry not found")
     def delete(self, task_id):
         conn = db.get_conn()
@@ -104,7 +104,9 @@ class deleteTask(Resource):
         return return_val
 
     @api.expect(task_data)
+    @api.response(200, "Success")     
     @api.response(404, "Task not found")
+    @api.doc(description="Edit the properties of a specified task")
     def put(self, task_id):
         # take in a payload,
         req = request.get_json(force=True)
@@ -164,29 +166,9 @@ class deleteTask(Resource):
         
         return return_val
 
-
-
 def generate_ID():
     conn = db.get_conn() 
     c = conn.cursor() #cursor to execute commands
     c.execute('SELECT MAX(id) FROM Task')
     val = c.fetchone()[0]
     return val+1
-
-def formatDate(dattime):
-    date = datetime.strptime(dattime, '%Y-%m-%d')
-    return date
-
-def checkFormat(date):
-    val = re.match("^\d{4}-\d{2}-\d{2}$",date)
-    print(val)
-    if (val != None):
-        return True
-    else:
-        return False
-
-def convertBool(val):
-    if (val == True):
-        return 1
-    else:
-        return 0
