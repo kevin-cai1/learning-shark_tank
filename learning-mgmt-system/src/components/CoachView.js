@@ -75,7 +75,7 @@ class CoachView extends Component {
                 key={task.id}
                 position={"right"}
               >
-                <h3 className="vertical-timeline-element-course">{task.course}</h3>
+                <h3 className="vertical-timeline-element-course">{task.task_name}</h3>
                 <h4 className="vertical-timeline-element-subtitle">{task.pillar}</h4>
               </VerticalTimelineElement>
             ))}
