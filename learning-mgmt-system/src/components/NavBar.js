@@ -46,7 +46,7 @@ class NavBar extends Component {
           <AppBar position="static">
             <Toolbar>
               <Typography className={classes.heading}>
-                DPE Learning
+                PlanIt - DPE Learning
               </Typography>
               <Tabs
                 value={this.state.path}
@@ -59,9 +59,9 @@ class NavBar extends Component {
                   onClick = {() => this.handleClick('/')}/>
                 <Tab 
                   label="Coach View"
-                  value="/coachview"
-                  component={Link} to="/coachview"
-                  onClick = {() => this.handleClick('/coachview')} />
+                  value="/coach"
+                  component={Link} to="/coach"
+                  onClick = {() => this.handleClick('/coach')} />
                 <Tab 
                   label="Reporting"
                   value="/reporting"
@@ -82,7 +82,7 @@ class NavBar extends Component {
               <CalendarView />
             </div>
           </Route>
-          <Route exact path="/coachview">
+          <Route exact path="/coach">
             <div className={classes.content}>
               <CoachView />
             </div>

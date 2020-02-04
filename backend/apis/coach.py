@@ -29,7 +29,7 @@ class viewCoacheePlans(Resource):
         users = [r[0] for r in results]
         names = [r[1] for r in results]
         for i in range(len(results)):   # for every user associated with coach_id
-            c.execute("SELECT e.id, e.user, e.task, e.start_date, e.end_date, e.completed, t.pillar, t.name FROM LearningEntry e, Task t WHERE e.task = t.id AND user = ?", (users[i],))
+            c.execute("SELECT e.id, e.user, e.task, e.start_date, e.end_date, e.completed, t.pillar, t.name FROM LearningEntry e, Task t WHERE e.task = t.id AND user = ? ORDER BY e.start_date", (users[i],))
             results = c.fetchall()
             user = {
                 'id': users[i],
