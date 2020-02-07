@@ -61,6 +61,7 @@ class CoachView extends Component {
         <div>You have no coachees :(</div>}
         {this.state.coachees.map((coachee) => (
           <VerticalTimeline
+            layout = {'2-column'}
             className={classes.timeline}
           >
             <h1>{coachee.name}</h1>
@@ -68,9 +69,9 @@ class CoachView extends Component {
               <VerticalTimelineElement
                 date={formatDate(task.start_date) + " to " + formatDate(task.end_date)}
                 className="vertical-timeline-element--work"
-                contentStyle={(task.completed == true) ? ({background: '#86BC25', color: '#fff'}) : ({background: '#E96868',color: '#fff'})}
+                contentStyle={(task.completed == true) ? ({background: '#86BC25', color: '#000'}) : ({background: '#E96868',color: '#fff'})}
                 contentArrowStyle={(task.completed == true) ? { borderRight: '7px solid  #86BC25' } : ({ borderRight: '7px solid #E96868'})}
-                iconStyle={{ background: '#86BC25', color: '#fff' }}
+                iconStyle={{ background: '#86BC25', color: '#000' }}
                 icon={ (task.pillar=='Specialisation') ? (buttonSpecialisation) : ((task.pillar=='Consulting') ? (buttonConsulting) : buttonMethodology) }
                 key={task.id}
                 position={"right"}

@@ -11,6 +11,23 @@
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+  /* .vertical-timeline-element-icon img {
+    display: block;
+    width: relative;
+    height: relative;
+    position: relative;
+    left: 100%;
+    top: 100%;
+    margin-left: -12px;
+    margin-top: -12px;
+} */
+  /* .vertical-timeline { 
+    position: absolute;
+    width: 100%;
+    left: 100%;
+    top: 6px;
+    font-size: 1rem;
+  } */
 }
 
 .App-header {
@@ -23,6 +40,8 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+
 
 .App-link {
   color: #61dafb;

@@ -5,7 +5,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-
+import IconButton from '@material-ui/core/IconButton';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 import { Link, Switch, Route } from 'react-router-dom';
 import LearningPlan from './LearningPlan';
 import CalendarView from './CalendarView';
@@ -21,10 +22,11 @@ const styles = (theme) => ({
     zIndex: 2,
   },
   heading: {
-    'padding-right': '32px'
+    'padding-right': '32px',
+    'padding-left': '10px'
   },
   content: {
-    paddingTop: theme.spacing(12)
+    paddingTop: theme.spacing(12),
   }
 })
 
@@ -46,7 +48,7 @@ class NavBar extends Component {
           <AppBar position="static">
             <Toolbar>
               <Typography className={classes.heading}>
-                PlanIt - DPE Learning
+                PlanIt: DPE Learning
               </Typography>
               <Tabs
                 value={this.state.path}
@@ -67,7 +69,15 @@ class NavBar extends Component {
                   value="/reporting"
                   component={Link} to="/reporting"
                   onClick = {() => this.handleClick('/reporting')} />
+                
               </Tabs>
+              <IconButton 
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                color="inherit"
+              >
+              <AccountCircle />
+              </IconButton>
             </Toolbar>
           </AppBar>
         </div>

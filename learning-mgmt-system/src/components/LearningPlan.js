@@ -7,6 +7,7 @@ import PeopleIcon from '@material-ui/icons/People';
 import SortIcon from '@material-ui/icons/Sort';
 
 import Fab from '@material-ui/core/Fab';
+import Tooltip from '@material-ui/core/Tooltip';
 import Modal from '@material-ui/core/Modal';
 import SchoolIcon from '@material-ui/icons/School';
 import Button from '@material-ui/core/Button';
@@ -15,6 +16,8 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 
+import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import DateFnsUtils from '@date-io/date-fns';
@@ -42,7 +45,10 @@ const styles = (theme) => ({
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
-  }
+  },
+  VerticalTimelineElement: {
+    align: "center",
+  },
 });
 
 function formatDate(date) {
@@ -143,30 +149,37 @@ class LearningPlan extends Component {
     var buttonMethodology = <SortIcon />
     
     return(
+      
       <React.Fragment>
         {this.state.length < 1 &&
         <div>You have no entries in your learning plan.</div>}
-        <VerticalTimeline>
+        
+        <VerticalTimeline
+          layout = {'1-column'}
+          >  
+          {/* <Container fluid >
+          <Typography component="div" align = "center" style={{ backgroundColor: '#fff'}}>
+            Tamar Jacobs
+          </Typography>
+          </Container> */}
+          <h1 style={{paddingLeft: "50px"}}> Tamar Jacobs </h1>
           {this.state.userTasks.map((task) => (
             <VerticalTimelineElement
               date={formatDate(task.start_date) + " to " + formatDate(task.end_date)}
               className="vertical-timeline-element--work"
               contentStyle={(task.completed == true) ? ({background: '#86BC25', color: '#fff'}) : ({background: '#E96868',color: '#fff'})}
               contentArrowStyle={(task.completed == true) ? { borderRight: '7px solid  #86BC25' } : ({ borderRight: '7px solid #E96868'})}
-              iconStyle={{ background: '#86BC25', color: '#fff' }}
+              iconStyle={{ background: '#86BC25', color: '#000' }}
               icon={ (task.pillar=='Specialisation') ? (buttonSpecialisation) : ((task.pillar=='Consulting') ? (buttonConsulting) : buttonMethodology) }
               key={task.id}
-              position={"right"}
             >
               <h3 className="vertical-timeline-element-course">{task.course}</h3>
-              {/* <div class="font-icon-wrapper" onClick={this.fontIconClick}>
-              <IconButton iconClassName="Mark as Complete" />
-              </div> */}
-              {/* this.markAsComplete(task.start_date,task.end_date,task.id */}
               <h4 className="vertical-timeline-element-subtitle">{task.pillar}</h4>
               {task.completed == false &&
               <Button 
-              variant="contained" onClick={() => {this.markAsComplete(task.start_date,task.end_date,task.id)}}>
+              variant="contained" 
+              contentStyle={(({background: '#E96868',color: '#fff'}))}
+              onClick={() => {this.markAsComplete(task.start_date,task.end_date,task.id)}}>
               Mark as Complete
               </Button> }
             </VerticalTimelineElement>
@@ -176,10 +189,12 @@ class LearningPlan extends Component {
         <p>{ buttonMethodology } Methodology </p>
         <p>{ buttonConsulting } Consulting </p>
         <p>{ buttonSpecialisation } Specialisation</p>
-
+          
+        <Tooltip title="Add new task">
         <Fab color="secondary" aria-label="add" className={classes.addButton}>
-          <AddIcon onClick={this.handleOpenForm}/>
+          <AddIcon onClick={this.handleOpenForm} />
         </Fab>
+        </Tooltip>
 
         <Modal
           aria-labelledby="transition-modal-title"
@@ -250,6 +265,7 @@ class LearningPlan extends Component {
           </Fade>
         </Modal>   
       </React.Fragment>
+      
     )
   }
 }
